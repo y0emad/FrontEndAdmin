@@ -5,11 +5,11 @@ import {
   ReadOutlined,
   UpSquareOutlined,
 } from "@ant-design/icons";
-import { Card } from "antd";
+import { Alert, Card } from "antd";
 import "../../index.css";
 import "./home.css";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import ScrollToTop from "react-scroll-to-top";
 import ProductModal from "../../components/ProductModal";
@@ -21,6 +21,7 @@ function Home() {
   const [lang, setLang] = useLocalStorage("lang", "ar");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [alert, setAlert] = useState(null);
 
   const showModal = (product) => {
     setSelectedProduct(product);
@@ -38,6 +39,52 @@ function Home() {
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang]);
+
+  const handleDelete = async (proId) => {
+    console.log(proId);
+    try {
+      const res = await fetch(
+        `http://localhost:4000/products/Delete/${proId}`,
+        {
+          method: "put",
+          headers: {
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjI5ODFjNWQ5NTNiYTEwODE2Y2U2MzAiLCJ1c2VybmFtZSI6InlvdXNlZiIsImVtYWlsIjoieS5lbWFkODVAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE0NDk3MDM1LCJleHAiOjE3MTQ1ODM0MzV9.4_jOtPbAyVCzjczlNgunNnrrPE6VAt76PUe_XaFJxAE`,
+          },
+          signal: new AbortController().signal,
+        }
+      );
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data);
+        setAlert(
+          <Alert
+            message={data.message}
+            type="success"
+            showIcon
+            className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+          />
+        );
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } else {
+        const data = await res.json();
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.log("Error:", error);
+
+      setAlert(
+        <Alert
+          message={error.message}
+          type="error"
+          showIcon
+          className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+        />
+      );
+    }
+  };
 
   return (
     <div>
@@ -91,10 +138,13 @@ function Home() {
                   >
                     <EditOutlined key="edit" />
                   </Link>,
-                  <Link to="/" className=" hover:!text-red-500 text-2xl">
+                  <button
+                    onClick={() => handleDelete(product._id)}
+                    className=" hover:!text-red-500 text-2xl"
+                  >
                     {" "}
                     <DeleteOutlined key="Delete" />
-                  </Link>,
+                  </button>,
                 ]}
               >
                 <Meta title={product.name} className="!text-[#000915]" />
@@ -102,6 +152,7 @@ function Home() {
             </div>
           ))}
         </div>
+        {alert}
       </div>
       {selectedProduct && (
         <ProductModal

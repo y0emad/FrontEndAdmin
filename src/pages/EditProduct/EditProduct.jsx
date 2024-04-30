@@ -1,3 +1,5 @@
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 import { useEffect, useState } from "react";
 import {
   Form,
@@ -12,7 +14,7 @@ function EditProduct() {
   const [number, setNumber] = useState(0);
   const [choices, setChoices] = useState([]);
   const [requiredData, setRequiredData] = useState([]);
-  const state = useNavigation();
+  const { state } = useNavigation();
   const product = useLoaderData();
 
   useEffect(() => {
@@ -61,7 +63,7 @@ function EditProduct() {
           <h2 className=" text-3xl font-bold text-gray-200 mb-8">
             Update a Product
           </h2>
-          <Form method="post">
+          <Form method="put" encType="multipart/form-data">
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
               <div className="sm:col-span-2">
                 <label
@@ -110,6 +112,7 @@ function EditProduct() {
               <input
                 className="block w-full text-lg text-gray-200 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                 id="large_size"
+                accept="image/*"
                 name="image"
                 type="file"
               />
@@ -199,7 +202,22 @@ function EditProduct() {
               disabled={state === "submitting"}
               className="inline-flex items-center px-5 duration-300 py-2.5 mt-4 sm:mt-10 text-sm font-medium text-center text-[#000915] bg-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-200 hover:bg-[#7f6727]"
             >
-              {state === "submitting" ? "Updating..." : "Update product"}
+              {state === "submitting" ? (
+                <Spin
+                  size="large"
+                  indicator={
+                    <LoadingOutlined
+                      style={{
+                        fontSize: 24,
+                        color: "#000915",
+                      }}
+                      spin
+                    />
+                  }
+                />
+              ) : (
+                "Update product"
+              )}
             </button>
             <Link
               to=".."
@@ -210,12 +228,14 @@ function EditProduct() {
           </Form>
           <button
             onClick={addRequiredData}
+            disabled={state === "submitting"}
             className="inline-flex items-center px-5 duration-300 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-[#000915] bg-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-200 hover:bg-[#7f6727]"
           >
             Add Required Data
           </button>
           <button
             type="button"
+            disabled={state === "submitting"}
             onClick={removeRequiredData}
             className="inline-flex border-2 border-[#7f6727] items-center mx-5 px-5 duration-300 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-gray-200 bg-transparent rounded-lg focus:ring-2 focus:ring-[#7f6727] dark:focus:ring-[#7f6727] hover:bg-[#7f6727]"
           >
@@ -226,15 +246,20 @@ function EditProduct() {
     </div>
   );
 }
-const action = async ({ request, signal }) => {
-  const array = [];
+const action = async ({ request, signal, params }) => {
+  // const array = [];
   const formData = await request.formData();
   const name = formData.get("name");
   const description = formData.get("description");
   let image = formData.get("image");
+  const formBody = new FormData();
+
   if (!image) {
     image = globalimg;
   }
+  formBody.set("image", image);
+  formBody.set("name", name);
+  formBody.set("description", description);
   for (let index = 0; index < globalNumber; index++) {
     const name = formData.get(`name-${index}`);
     const required = formData.get(`required-${index}`);
@@ -242,10 +267,31 @@ const action = async ({ request, signal }) => {
     const choices = formData.get(`choices-${index}`);
     const newRequired = Boolean(required === "false" ? false : true);
     const newHasChoices = Boolean(hasChoices === "false" ? false : true);
-    array.push({ index, name, newRequired, newHasChoices, choices });
+    formBody.set(`requiredData[${index}][name]`, name);
+
+    formBody.set(`requiredData[${index}][required]`, newRequired);
+    formBody.set(`requiredData[${index}][hasChoices]`, newHasChoices);
+    if (newHasChoices) {
+      const newChoices = choices.split("-");
+      for (let i = 0; i < newChoices.length; i++) {
+        formBody.set(`requiredData[${index}][choices][${i}]`, newChoices[i]);
+      }
+    }
+    // array.push({ index, name, newRequired, newHasChoices, choices });
   }
-  console.log(array);
-  console.log(name, description, image);
+
+  const res = await fetch(`http://localhost:4000/products/${params.Pro_id}`, {
+    method: "put",
+    body: formBody,
+    headers: {
+      authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjI5ODFjNWQ5NTNiYTEwODE2Y2U2MzAiLCJ1c2VybmFtZSI6InlvdXNlZiIsImVtYWlsIjoieS5lbWFkODVAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE0NTE0MDIyLCJleHAiOjE3MTQ2MDA0MjJ9.R6edi03uxJEj8eDVz4PVSAOoaMqiaTX8gLPayj9WuFE`,
+    },
+    signal,
+  })
+    .then((res) => res.json())
+    .then((data) => console.log(data));
+  // console.log(array);
+  // console.log(name, description, image);
   return redirect("/");
 };
 const loader = async ({ request: { signal }, params }) => {

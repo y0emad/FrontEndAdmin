@@ -4,9 +4,9 @@ import { LayoutMain } from "./layouts/LayoutMain";
 import { LayoutError } from "./layouts/LayoutError";
 import { LogIn } from "./pages/Log_in/LogIn";
 import { AddProduct } from "./pages/AddNewProduct/AddNewProduct";
-import { OrdersStatus } from "./pages/OrdersStatus/OrdersStatus";
+import { OrdersStatusFunc } from "./pages/OrdersStatus/OrdersStatus";
 import { EditExitProduct } from "./pages/EditProduct/EditProduct";
-import { WaitingPage } from "./pages/WaitingList/WaitingPage";
+import { WaitingPageFunc } from "./pages/WaitingList/WaitingPage";
 
 export const router = createBrowserRouter([
   {
@@ -24,8 +24,14 @@ export const router = createBrowserRouter([
         path: "/EditProduct/:Pro_id",
         ...EditExitProduct,
       },
-      { path: "/OrdersStatus", element: <OrdersStatus /> },
-      { path: "/WaitingPage", element: <WaitingPage /> },
+      {
+        path: "/OrdersStatus",
+        ...OrdersStatusFunc,
+      },
+      {
+        path: "/WaitingPage",
+        ...WaitingPageFunc,
+      },
     ],
   },
 ]);

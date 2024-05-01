@@ -36,7 +36,7 @@ function AddNewProduct() {
     setChoices(choices.slice(0, -1));
     setRequiredData(requiredData.slice(0, -1));
   };
-  // console.log("errorAlert", errorAlert);
+
   return (
     <div>
       {errorAlert?.ValidationError && (

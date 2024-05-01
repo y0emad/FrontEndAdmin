@@ -1,12 +1,13 @@
 import { useTranslation } from "react-i18next";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { useEffect } from "react";
-import ModalWait from "../../components/ModalWait";
 import ModalOrder from "../../components/ModalOrder";
-export function OrdersStatus() {
+import { useLoaderData } from "react-router-dom";
+function OrdersStatus() {
   const [t, i18n] = useTranslation("global");
   const [lang, setLang] = useLocalStorage("lang", "ar");
-
+  const allOrderAccept = useLoaderData();
+  // console.log(allOrderAccept);
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang]);
@@ -23,11 +24,29 @@ export function OrdersStatus() {
               Product Name
             </div>
           </div>
-
-          <ModalOrder num={1} />
-          <ModalOrder num={2} />
+          {allOrderAccept.data.map((order) => (
+            <ModalOrder {...order} key={order._id} />
+          ))}
         </div>
       </section>
     </div>
   );
 }
+
+const loader = async ({ request: { signal } }) => {
+  const allOrderAccept = await fetch(
+    "http://localhost:4000/orders/acceptedOrders",
+    {
+      signal,
+      headers: {
+        authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjI5ODFjNWQ5NTNiYTEwODE2Y2U2MzAiLCJ1c2VybmFtZSI6InlvdXNlZiIsImVtYWlsIjoieS5lbWFkODVAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE0NTE5MzgyLCJleHAiOjE3MTQ2MDU3ODJ9.Xi4T-M0TtyVYQoiZlN4f9YR-_N9jEC1vtqxejLNlWbk`,
+      },
+    }
+  ).then((res) => res.json());
+  return allOrderAccept;
+};
+
+export const OrdersStatusFunc = {
+  loader,
+  element: <OrdersStatus />,
+};

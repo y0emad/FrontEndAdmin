@@ -1,18 +1,23 @@
-import { Modal } from "antd";
+import { Alert, Modal } from "antd";
 import { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { Form } from "react-router-dom";
-export default function ModalOrder({ num }) {
+export default function ModalOrder(order) {
   const [t, i18n] = useTranslation("global");
   const [lang, setLang] = useLocalStorage("lang", "ar");
-
+  const [status, setStatus] = useState(order.status);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  // console.log(order);
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const [msg, setMsg] = useState("");
 
   const showModal = (key) => {
     return key === "Details" ? setIsModalOpen(true) : setIsStatusOpen(true);
@@ -23,14 +28,91 @@ export default function ModalOrder({ num }) {
   const handleCancel = (key) => {
     return key === "Details" ? setIsModalOpen(false) : setIsStatusOpen(false);
   };
+  // console.log(message);
+  const handleSub = (prodId) => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
 
+    if (message && message.length > 0) {
+      fetch(`http://localhost:4000/orders/${prodId}/sendMessage`, {
+        signal,
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjI5ODFjNWQ5NTNiYTEwODE2Y2U2MzAiLCJ1c2VybmFtZSI6InlvdXNlZiIsImVtYWlsIjoieS5lbWFkODVAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE0NTE5MzgyLCJleHAiOjE3MTQ2MDU3ODJ9.Xi4T-M0TtyVYQoiZlN4f9YR-_N9jEC1vtqxejLNlWbk`,
+        },
+        body: JSON.stringify({ message }),
+        method: "post",
+      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          setMsg(data.message);
+          setError(null);
+        })
+        .catch((error) => {
+          if (error.name !== "AbortError") {
+            setError(error.message);
+          }
+        })
+        .finally(() => setLoading(false));
+    }
+
+    fetch(`http://localhost:4000/orders/${prodId}/status`, {
+      signal,
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjI5ODFjNWQ5NTNiYTEwODE2Y2U2MzAiLCJ1c2VybmFtZSI6InlvdXNlZiIsImVtYWlsIjoieS5lbWFkODVAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE0NTE5MzgyLCJleHAiOjE3MTQ2MDU3ODJ9.Xi4T-M0TtyVYQoiZlN4f9YR-_N9jEC1vtqxejLNlWbk`,
+      },
+      body: JSON.stringify({ status }),
+      method: "put",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setMsg(data.message);
+        setError(null);
+      })
+      .catch((error) => {
+        if (error.name !== "AbortError") {
+          setError(error.message);
+        }
+      })
+      .finally(() => setLoading(false));
+
+    return () => {
+      abortController.abort();
+    };
+  };
   return (
     <>
+      {msg ? (
+        <Alert
+          message={msg}
+          type="success"
+          showIcon
+          className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+        />
+      ) : error ? (
+        <Alert
+          message={error.message}
+          type="error"
+          showIcon
+          className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+        />
+      ) : null}
       <div className="grid grid-cols-1 lg:grid-cols-2 min-[550px]:gap-7 border-t border-[#7f6727] py-6">
         <div className="flex items-center  flex-col   min-[550px]:flex-row gap-3 min-[550px]:gap-6 w-full justify-center lg:justify-start lg:max-w-xl lg:mx-auto">
           <div className="pro-data  max-w-sm w-auto  ">
             <h5 className="font-semibold text-xl  leading-8 text-gray-200 max-[550px]:text-center">
-              Latest N-5 Perfuam
+              {order.product.product_name}
             </h5>
           </div>
         </div>
@@ -62,10 +144,30 @@ export default function ModalOrder({ num }) {
               <div className=" w-full flex flex-wrap gap-2 items-center ">
                 {" "}
                 <h1 className="text-2xl font-medium text-[#ad8d36]">
+                  Order Id:
+                </h1>{" "}
+                <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
+                  {order._id}
+                </h1>
+              </div>
+
+              <div className=" w-full flex flex-wrap gap-2 items-center ">
+                {" "}
+                <h1 className="text-2xl font-medium text-[#ad8d36]">
+                  User Id :
+                </h1>{" "}
+                <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
+                  {order.user_id}
+                </h1>
+              </div>
+
+              <div className=" w-full flex flex-wrap gap-2 items-center ">
+                {" "}
+                <h1 className="text-2xl font-medium text-[#ad8d36]">
                   {t("ModalMyPro.Name")} :
                 </h1>{" "}
                 <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
-                  Perfume Bottle
+                  {order.product.product_name}
                 </h1>
               </div>
               <div className=" w-full flex flex-wrap gap-2 items-center">
@@ -73,7 +175,10 @@ export default function ModalOrder({ num }) {
                 <h1 className="text-2xl font-medium text-[#ad8d36]">
                   {t("ModalMyPro.Quantity")} :
                 </h1>{" "}
-                <h1 className=" text-xl text-gray-200">7</h1>
+                <h1 className=" text-xl text-gray-200">
+                  {" "}
+                  {order.product.quantity}
+                </h1>
               </div>
 
               <div className=" w-full flex flex-wrap gap-2 items-center ">
@@ -82,9 +187,25 @@ export default function ModalOrder({ num }) {
                   {t("ModalMyPro.File_Name")} :
                 </h1>{" "}
                 <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
-                  fdssssssssssssssssDFDSffffffffdsaaaa
+                  {order.product.file}
                 </h1>
               </div>
+              {order.product.data.map((item) => (
+                <div key={item._id} className=" space-y-3">
+                  <div className="w-full flex flex-wrap gap-2 items-center">
+                    <h1 className="text-2xl font-medium text-[#ad8d36]">
+                      {t("Home.Name")} :
+                    </h1>{" "}
+                    <h1 className="text-xl text-gray-200 min-w-[80px]  max-w-[72%]">
+                      {item.field_name}
+                    </h1>
+                    <h1 className="text-2xl font-medium text-[#ad8d36]">
+                      Value :
+                    </h1>{" "}
+                    <h1 className="text-xl text-gray-200">{item.value}</h1>
+                  </div>
+                </div>
+              ))}
             </div>
           </Modal>
 
@@ -114,21 +235,22 @@ export default function ModalOrder({ num }) {
           >
             {" "}
             <Form>
-              <div class="grid gap-6  mb-6 mt-10 grid-cols-1">
+              <div className="grid gap-6  mb-6 mt-10 grid-cols-1">
                 <div>
                   {" "}
                   <label
                     htmlFor="status"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200"
                   >
                     Status
                   </label>
                   <select
-                    name="status"
+                    defaultValue={status}
+                    onChange={(e) => setStatus(e.target.value)}
                     id="status"
                     className=" border   text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-[#ad8d36] focus:border-[#ad8d36]"
                   >
-                    <option value={0} selected>
+                    <option value={0}>
                       1) You paid the bill for the book now will be printed
                     </option>
                     <option value={1}>
@@ -150,21 +272,25 @@ export default function ModalOrder({ num }) {
                   <input
                     type="text"
                     id="message"
-                    name="message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Message"
                   />
                 </div>
                 <div className=" gap-5 flex ">
-                  <button className="  py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-200 bg-[#7f6727] hover:bg-gray-200 duration-300 hover:text-[#000915] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7f6727]">
+                  <button
+                    onClick={() => handleSub(order._id)}
+                    className="  py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-200 bg-[#7f6727] hover:bg-gray-200 duration-300 hover:text-[#000915] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7f6727]"
+                  >
                     Submit
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => handleCancel("Status")}
                     className=" py-2 px-4 shadow-sm text-sm font-medium rounded-md text-gray-200 bg-transparent hover:bg-[#7f6727] border-[#7f6727] duration-300 border-2"
                   >
                     Cancel
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </Form>

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import LOGIN from "./login.module.css";
 import { useFormik } from "formik";
 import axios from "axios";
@@ -162,12 +162,7 @@ export function LogIn() {
               )}
             </button>
 
-            <Link className={LOGIN.fancy} to={"/Registeration"}>
-              <span className={LOGIN.topKey}></span>
-              <span className={LOGIN.text}>Sign up</span>
-              <span className={LOGIN.bottomKey1}></span>
-              <span className={LOGIN.bottomKey2}></span>
-            </Link>
+
           </div>
         </form>
       </div>

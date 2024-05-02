@@ -169,11 +169,6 @@ export function LogIn() {
               <span className={LOGIN.bottomKey2}></span>
             </Link>
           </div>
-          <div className={LOGIN.forget}>
-            <Link to={"/ForgetPassword"} className={LOGIN.forgettext}>
-              Forget Password?
-            </Link>
-          </div>
         </form>
       </div>
     </div>

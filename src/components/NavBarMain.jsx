@@ -3,7 +3,7 @@ import "../styles.css";
 import logo from "../images/logo.png";
 import { Select } from "antd";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   GlobalOutlined,
   UnorderedListOutlined,
@@ -12,14 +12,18 @@ import {
   PlusSquareOutlined,
   ClockCircleOutlined,
   IssuesCloseOutlined,
+  LoginOutlined,
 } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { authContext } from "../Context/authentication";
 
 export function NavBarMain() {
   const [t, i18n] = useTranslation("global");
   const [toggleMob, setToggleMob] = useState(true);
   const [lang, setLang] = useLocalStorage("lang", "ar");
+  const NavFunc = useNavigate();
+  const { token, setToken } = useContext(authContext);
   useEffect(() => {
     i18n.changeLanguage(lang);
     const htmlDir = document.documentElement.getAttribute("dir");
@@ -37,6 +41,13 @@ export function NavBarMain() {
     setToggleMob((e) => !e);
     navlinks?.classList.toggle("top-[100%]");
   };
+  function logOut() {
+    localStorage.removeItem("tkn");
+    setToken(null);
+    setTimeout(() => {
+      NavFunc("/LogIn");
+    }, 2000);
+  }
   return (
     <nav
       className={
@@ -45,41 +56,56 @@ export function NavBarMain() {
     >
       <div className="nav-links me-auto lg:m-3 lg:static  lg:min-h-fit lg:items-center absolute bg-[#000915] min-h-[25vh] bottom-[240%] grid  left-0 lg:w-auto lg:py-0  w-full  text-gray-200 fontMed ">
         <ul className="flex lg:flex-row flex-col lg:justify-start  justify-center items-end gap-5 mr-5 ml-5   lg:items-center ">
-          <li>
-            <Link
-              to="/AddNewProduct"
-              className="flex justify-center gap-2 text-nowrap hover:text-[#7f6727]"
-            >
-              {t("header.AddNewProduct")} <PlusSquareOutlined />
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/OrdersStatus"
-              className="flex justify-center gap-2 text-nowrap hover:text-[#7f6727]"
-            >
-              {t("header.Order'sStatus")}
-              <ClockCircleOutlined />
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/WaitingPage"
-              className="flex justify-center gap-2 text-nowrap hover:text-[#7f6727]"
-            >
-              {t("header.TheWaitingList")}
-              <IssuesCloseOutlined />
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/"
-              className="flex  gap-2 justify-center text-nowrap  items-center  lg:hidden hover:text-[#7f6727]"
-            >
-              <span>{t("header.Log_out")}</span>
-              <LogoutOutlined />
-            </Link>
-          </li>
+          {token ? <>
+            <li>
+              <Link
+                to="/AddNewProduct"
+                className="flex justify-center gap-2 text-nowrap hover:text-[#7f6727]"
+              >
+                {t("header.AddNewProduct")} <PlusSquareOutlined />
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/OrdersStatus"
+                className="flex justify-center gap-2 text-nowrap hover:text-[#7f6727]"
+              >
+                {t("header.Order'sStatus")}
+                <ClockCircleOutlined />
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/WaitingPage"
+                className="flex justify-center gap-2 text-nowrap hover:text-[#7f6727]"
+              >
+                {t("header.TheWaitingList")}
+                <IssuesCloseOutlined />
+              </Link>
+            </li>
+            <li>
+              <span
+                onClick={logOut}
+                className="flex  gap-2 justify-center text-nowrap  items-center  md:hidden hover:text-[#7f6727] cursor-pointer"
+              >
+                <span>{t("header.Log_out")}</span>
+                <LogoutOutlined />
+              </span>
+            </li>
+          </> : <>
+            <>
+              <li>
+                <Link
+                  to="/LogIn"
+                  className="flex  gap-2 justify-center text-nowrap  items-center  md:hidden hover:text-[#7f6727]"
+                >
+                  <span>{t("header.Log_in")}</span>
+                  <LoginOutlined />
+                </Link>
+              </li>
+            </>
+          </>}
+
         </ul>
       </div>
       <div
@@ -113,13 +139,27 @@ export function NavBarMain() {
             },
           ]}
         />
-        <Link
-          to="/LogIn"
-          className="lg:flex  gap-2 justify-center  hover:text-[#7f6727] text-nowrap  items-center fontMed hidden"
-        >
-          <span>{t("header.Log_out")}</span>
-          <LogoutOutlined />
-        </Link>
+        {token ? (
+          <>
+            <span
+              onClick={logOut}
+              className="md:flex  gap-2 justify-center  hover:text-[#7f6727] text-nowrap  items-center fontMed hidden cursor-pointer"
+            >
+              <span>{t("header.Log_out")}</span>
+              <LogoutOutlined />
+            </span>
+          </>
+        ) : (
+          <>
+            <Link
+              to="/LogIn"
+              className="md:flex  gap-2 justify-center  hover:text-[#7f6727] text-nowrap  items-center fontMed hidden"
+            >
+              <span>{t("header.Log_in")}</span>
+              <LoginOutlined />
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );

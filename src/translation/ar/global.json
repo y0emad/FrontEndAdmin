@@ -1,10 +1,11 @@
 {
   "header": {
     "Services": "الخدمات",
-    "Log_out": "تسجيل الخروج",
     "AddNewProduct": "إضافة منتج جديد",
     "Order'sStatus": "حالة الطلبات",
-    "TheWaitingList": "قائمة الانتظار"
+    "TheWaitingList": "قائمة الانتظار",
+    "Log_in": "تسجيل الدخول",
+    "Log_out": "تسجيل خروج"
   },
   "footer": {
     "copyright": " 2024 جميع الحقوق محفوظة © البوابة الإلكترونية بمركز الحساب العلمي"

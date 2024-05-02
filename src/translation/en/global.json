@@ -1,10 +1,11 @@
 {
   "header": {
     "Services": "Services",
-    "Log_out": "Log out",
     "AddNewProduct": "Add New Product",
     "Order'sStatus": "Order's Status",
-    "TheWaitingList": "The Waiting List"
+    "TheWaitingList": "The Waiting List",
+    "Log_in": "Log in",
+    "Log_out":"Log Out"
   },
   "footer": {
     "copyright": "all rights reserved © the electronic portal of the scientific calculation Center 2024"

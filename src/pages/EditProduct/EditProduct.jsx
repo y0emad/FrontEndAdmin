@@ -1,6 +1,7 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import { useEffect, useState } from "react";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import {
   Form,
   Link,
@@ -284,7 +285,7 @@ const action = async ({ request, signal, params }) => {
     method: "put",
     body: formBody,
     headers: {
-      authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjI5ODFjNWQ5NTNiYTEwODE2Y2U2MzAiLCJ1c2VybmFtZSI6InlvdXNlZiIsImVtYWlsIjoieS5lbWFkODVAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE0NTE0MDIyLCJleHAiOjE3MTQ2MDA0MjJ9.R6edi03uxJEj8eDVz4PVSAOoaMqiaTX8gLPayj9WuFE`,
+      authorization: `Bearer ${localStorage.getItem("tkn")}`,
     },
     signal,
   })
@@ -305,5 +306,9 @@ const loader = async ({ request: { signal }, params }) => {
 export const EditExitProduct = {
   action,
   loader,
-  element: <EditProduct />,
+  element: (
+    <ProtectedRoute>
+      <EditProduct />
+    </ProtectedRoute>
+  ),
 };

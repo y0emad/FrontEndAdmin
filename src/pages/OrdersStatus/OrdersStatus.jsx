@@ -3,6 +3,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import { useEffect } from "react";
 import ModalOrder from "../../components/ModalOrder";
 import { useLoaderData } from "react-router-dom";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 function OrdersStatus() {
   const [t, i18n] = useTranslation("global");
   const [lang, setLang] = useLocalStorage("lang", "ar");
@@ -39,7 +40,7 @@ const loader = async ({ request: { signal } }) => {
     {
       signal,
       headers: {
-        authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjI5ODFjNWQ5NTNiYTEwODE2Y2U2MzAiLCJ1c2VybmFtZSI6InlvdXNlZiIsImVtYWlsIjoieS5lbWFkODVAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE0NTE5MzgyLCJleHAiOjE3MTQ2MDU3ODJ9.Xi4T-M0TtyVYQoiZlN4f9YR-_N9jEC1vtqxejLNlWbk`,
+        authorization: `Bearer ${localStorage.getItem("tkn")}`,
       },
     }
   ).then((res) => res.json());
@@ -48,5 +49,9 @@ const loader = async ({ request: { signal } }) => {
 
 export const OrdersStatusFunc = {
   loader,
-  element: <OrdersStatus />,
+  element: (
+    <ProtectedRoute>
+      <OrdersStatus />
+    </ProtectedRoute>
+  ),
 };

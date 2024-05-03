@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -48,7 +49,7 @@ function Home() {
         {
           method: "put",
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjI5ODFjNWQ5NTNiYTEwODE2Y2U2MzAiLCJ1c2VybmFtZSI6InlvdXNlZiIsImVtYWlsIjoieS5lbWFkODVAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE0NDk3MDM1LCJleHAiOjE3MTQ1ODM0MzV9.4_jOtPbAyVCzjczlNgunNnrrPE6VAt76PUe_XaFJxAE`,
+            Authorization: `Bearer ${localStorage.getItem("tkn")}`,
           },
           signal: new AbortController().signal,
         }
@@ -178,4 +179,11 @@ const loader = async ({ request: { signal } }) => {
   return all_products;
 };
 
-export const HomeFunc = { element: <Home />, loader };
+export const HomeFunc = {
+  element: (
+    <ProtectedRoute>
+      <Home />
+    </ProtectedRoute>
+  ),
+  loader,
+};

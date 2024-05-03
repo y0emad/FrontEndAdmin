@@ -1,6 +1,7 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import { Alert, Spin } from "antd";
 import { useState } from "react";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import {
   Form,
   Link,
@@ -265,8 +266,7 @@ const action = async ({ request }) => {
     method: "POST",
     signal: request.signal,
     headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjI5ODFjNWQ5NTNiYTEwODE2Y2U2MzAiLCJ1c2VybmFtZSI6InlvdXNlZiIsImVtYWlsIjoieS5lbWFkODVAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE0NDkyODEzLCJleHAiOjE3MTQ1NzkyMTN9.Fnx-2RTMBvRRdbG8pYwKx72H6anHFGchJNJD3a09W3M",
+      Authorization: `Bearer ${localStorage.getItem("tkn")}`,
     },
     body: formBody,
   });
@@ -280,5 +280,9 @@ const action = async ({ request }) => {
 };
 export const AddProduct = {
   action,
-  element: <AddNewProduct />,
+  element: (
+    <ProtectedRoute>
+      <AddNewProduct />
+    </ProtectedRoute>
+  ),
 };

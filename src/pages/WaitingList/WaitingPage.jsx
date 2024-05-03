@@ -5,6 +5,7 @@ import ModalWait from "../../components/ModalWait";
 import { useLoaderData } from "react-router-dom";
 import ScrollToTop from "react-scroll-to-top";
 import { UpSquareOutlined } from "@ant-design/icons";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 function WaitingPage() {
   const [t, i18n] = useTranslation("global");
   const [lang, setLang] = useLocalStorage("lang", "ar");
@@ -62,7 +63,7 @@ const loader = async ({ request }) => {
       method: "GET",
       signal: request.signal,
       headers: {
-        authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjI5ODFjNWQ5NTNiYTEwODE2Y2U2MzAiLCJ1c2VybmFtZSI6InlvdXNlZiIsImVtYWlsIjoieS5lbWFkODVAeWFob28uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE0NTE5MzgyLCJleHAiOjE3MTQ2MDU3ODJ9.Xi4T-M0TtyVYQoiZlN4f9YR-_N9jEC1vtqxejLNlWbk`,
+        authorization: `Bearer ${localStorage.getItem("tkn")}`,
       },
     }
   ).then((res) => res.json());
@@ -70,4 +71,11 @@ const loader = async ({ request }) => {
   return ordersWait;
 };
 
-export const WaitingPageFunc = { loader, element: <WaitingPage /> };
+export const WaitingPageFunc = {
+  loader,
+  element: (
+    <ProtectedRoute>
+      <WaitingPage />
+    </ProtectedRoute>
+  ),
+};

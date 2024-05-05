@@ -3,15 +3,23 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import {
   DeleteOutlined,
   EditOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
   ReadOutlined,
   UpSquareOutlined,
 } from "@ant-design/icons";
-import { Alert, Card } from "antd";
+import { Alert, Card, Popover } from "antd";
 import "../../index.css";
 import "./home.css";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import { useEffect, useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import {
+  Link,
+  useLoaderData,
+  Form,
+  useSearchParams,
+  useNavigate,
+} from "react-router-dom";
 import ScrollToTop from "react-scroll-to-top";
 import ProductModal from "../../components/ProductModal";
 const { Meta } = Card;
@@ -44,19 +52,98 @@ function Home() {
   const handleDelete = async (proId) => {
     console.log(proId);
     try {
-      const res = await fetch(
-        `http://localhost:4000/products/Delete/${proId}`,
-        {
-          method: "put",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("tkn")}`,
-          },
-          signal: new AbortController().signal,
-        }
+      const res = await fetch(`http://localhost:4000/products/${proId}`, {
+        method: "delete",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("tkn")}`,
+        },
+        signal: new AbortController().signal,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAlert(
+          <Alert
+            message={data.message}
+            type="success"
+            showIcon
+            className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+          />
+        );
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } else {
+        const data = await res.json();
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.log("Error:", error);
+
+      setAlert(
+        <Alert
+          message={error.message}
+          type="error"
+          showIcon
+          className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+        />
       );
+    }
+  };
+  const handleShow = async (proId) => {
+    console.log(proId);
+    try {
+      const res = await fetch(`http://localhost:4000/products/show/${proId}`, {
+        method: "put",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("tkn")}`,
+        },
+        signal: new AbortController().signal,
+      });
       if (res.ok) {
         const data = await res.json();
         // console.log(data);
+        setAlert(
+          <Alert
+            message={data.message}
+            type="success"
+            showIcon
+            className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+          />
+        );
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } else {
+        const data = await res.json();
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.log("Error:", error);
+
+      setAlert(
+        <Alert
+          message={error.message}
+          type="error"
+          showIcon
+          className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+        />
+      );
+    }
+  };
+  const handleHide = async (proId) => {
+    // console.log(proId);
+    try {
+      const res = await fetch(`http://localhost:4000/products/hide/${proId}`, {
+        method: "put",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("tkn")}`,
+        },
+        signal: new AbortController().signal,
+      });
+      if (res.ok) {
+        const data = await res.json();
         setAlert(
           <Alert
             message={data.message}
@@ -108,71 +195,121 @@ function Home() {
           {t("Home.all_products")}
         </h2>
         <div className=" flex justify-evenly  flex-wrap mr-5 ml-5 gap-10 ">
-          {all_products.data.map((product) => (
-            <div key={product._id}>
-              <Card
-                key={product._id}
-                style={{
-                  width: 300,
-                }}
-                cover={
-                  <img
-                    alt={`${product.name}`}
-                    src={`${product.image}`}
-                    className="w-full h-64"
-                  />
-                }
-                actions={[
-                  <button
-                    onClick={() => showModal(product)}
-                    className=" hover:!text-[#000915] text-2xl "
-                  >
-                    <ReadOutlined
-                      key="view"
-                      className=" hover:!text-[#000915]"
+          {all_products.message === "No products found for the given query." ? (
+            <h1 className=" text-2xl font-medium">No products found</h1>
+          ) : (
+            all_products.data.map((product) => (
+              <div key={product._id}>
+                <Card
+                  key={product._id}
+                  style={{
+                    width: 300,
+                  }}
+                  cover={
+                    <img
+                      alt={`${product.name}`}
+                      src={`${product.image}`}
+                      className={`w-full h-64 ${
+                        product.deleted ? "brightness-50" : ""
+                      }`}
                     />
-                  </button>,
-
-                  <Link
-                    to={`/EditProduct/${product._id}`}
-                    className=" hover:!text-[#000915] text-2xl"
-                  >
-                    <EditOutlined key="edit" />
-                  </Link>,
-                  <button
-                    onClick={() => handleDelete(product._id)}
-                    className=" hover:!text-red-500 text-2xl"
-                  >
-                    {" "}
-                    <DeleteOutlined key="Delete" />
-                  </button>,
-                ]}
-              >
-                <Meta title={product.name} className="!text-[#000915]" />
-              </Card>
-            </div>
-          ))}
+                  }
+                  actions={[
+                    <Popover content="View The Product">
+                      <button
+                        onClick={() => showModal(product)}
+                        className=" hover:!text-[#000915] text-2xl "
+                      >
+                        <ReadOutlined
+                          key="view"
+                          className=" hover:!text-[#000915]"
+                        />
+                      </button>
+                    </Popover>,
+                    <Popover content="Edit The Product">
+                      <Link
+                        to={`/EditProduct/${product._id}`}
+                        className=" hover:!text-[#000915] text-2xl mt-1"
+                      >
+                        <EditOutlined key="edit" />
+                      </Link>
+                    </Popover>,
+                    <Popover content="Delete The Product">
+                      <button
+                        onClick={() => handleDelete(product._id)}
+                        className=" hover:!text-red-500 text-2xl"
+                      >
+                        {" "}
+                        <DeleteOutlined key="Delete" />
+                      </button>
+                    </Popover>,
+                    product.deleted ? (
+                      <Popover content="Show The Product">
+                        <button
+                          onClick={() => handleShow(product._id)}
+                          className=" hover:!text-[#000915] text-2xl"
+                        >
+                          {" "}
+                          <EyeOutlined key="Show" />
+                        </button>
+                      </Popover>
+                    ) : (
+                      <Popover content="Hide The Product">
+                        <button
+                          onClick={() => handleHide(product._id)}
+                          className=" hover:!text-red-500 text-2xl"
+                        >
+                          {" "}
+                          <EyeInvisibleOutlined key="disable" />
+                        </button>
+                      </Popover>
+                    ),
+                  ]}
+                >
+                  <Meta title={product.name} className="!text-[#000915]" />
+                </Card>
+              </div>
+            ))
+          )}
         </div>
         {alert}
       </div>
-      {selectedProduct && (
-        <ProductModal
-          open={modalOpen}
-          handleOk={handleOk}
-          handleCancel={handleCancel}
-          product={selectedProduct}
-          t={t}
-        />
-      )}
+      {all_products.message === "No products found for the given query."
+        ? null
+        : selectedProduct && (
+            <ProductModal
+              open={modalOpen}
+              handleOk={handleOk}
+              handleCancel={handleCancel}
+              product={selectedProduct}
+              t={t}
+            />
+          )}
     </div>
   );
 }
 
-const loader = async ({ request: { signal } }) => {
+const loader = async ({ request: { signal, url } }) => {
+  const searchParams = new URL(url).searchParams;
+  let query = searchParams.get("query") || "";
+
+  if (query) {
+    let all_products = await fetch(
+      `http://localhost:4000/products/search/${query}`,
+      {
+        signal: signal,
+        headers: { Authorization: `Bearer ${localStorage.getItem("tkn")}` },
+      }
+    );
+
+    return all_products;
+  }
+
   const all_products = await fetch(
-    "https://printing-sys-fojo.vercel.app/products",
+    "http://localhost:4000/products/GetAllProducts",
     {
-      signal,
+      signal: signal,
+      headers: { Authorization: `Bearer ${localStorage.getItem("tkn")}` },
     }
   );
 

@@ -1,5 +1,5 @@
-import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
+import { ExclamationCircleOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Popover, Spin } from "antd";
 import { useEffect, useState } from "react";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import {
@@ -181,15 +181,18 @@ function EditProduct() {
                     className="block mb-2 text-sm font-medium text-gray-200"
                   >
                     Choices {index + 1}
+                    <Popover content="Must be in this format: Red,Black,Blue">
+                      <ExclamationCircleOutlined className="text-[#b59439] ms-2" />
+                    </Popover>
                   </label>
-
                   <input
                     type="text"
                     name={`choices-${index}`}
                     id={`choices-${index}`}
+                    pattern="(\w+(?: \w+)*,?)+"
                     defaultValue={field.choices}
                     className="bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Choices"
+                    placeholder="Like Red,Black,Blue"
                     {...(choices[index]
                       ? { required: true }
                       : { required: false })}
@@ -273,7 +276,7 @@ const action = async ({ request, signal, params }) => {
     formBody.set(`requiredData[${index}][required]`, newRequired);
     formBody.set(`requiredData[${index}][hasChoices]`, newHasChoices);
     if (newHasChoices) {
-      const newChoices = choices.split("-");
+      const newChoices = choices.split(",");
       for (let i = 0; i < newChoices.length; i++) {
         formBody.set(`requiredData[${index}][choices][${i}]`, newChoices[i]);
       }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
   const [products, setProducts] = useState([]);
@@ -63,8 +64,8 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
         <div className="text-red-500 ">Error: {error}</div>
       ) : (
         <div className="flex flex-wrap gap-5 mt-8 items-center">
-          <div className="w-full flex flex-wrap gap-2 items-center">
-            <h1 className="text-2xl font-medium text-[#ad8d36]">
+          <div className="w-full flex flex-wrap gap-2 items-start">
+            <h1 className="text-2xl font-medium text-[#ad8d36] ">
               {t("Home.Name")} :
             </h1>{" "}
             <h1 className="text-xl text-gray-200 min-w-[80px] max-w-[367px]">
@@ -75,7 +76,7 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
             <h1 className="text-2xl font-medium text-[#ad8d36]">
               {t("Home.Description")} :
             </h1>{" "}
-            <h1 className="text-2xl text-gray-200 min-w-[80px] max-w-[367px]">
+            <h1 className="text-xl text-gray-200 min-w-[80px] max-w-[367px]">
               {products.description}
             </h1>
           </div>
@@ -83,8 +84,8 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
             <h1 className="text-2xl font-medium text-[#ad8d36]">
               {t("Home.Image")} :
             </h1>{" "}
-            <h1 className="text-2xl text-gray-200 min-w-[80px]   max-w-[367px]">
-              {products.image}
+            <h1 className="text-xl text-gray-200 min-w-[80px]   max-w-[367px]">
+              <Link to={products.image}>{products.image}</Link>
             </h1>
           </div>
           <div className="w-full flex flex-wrap gap-2 items-center">
@@ -93,7 +94,7 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
             </h1>{" "}
             {products.requiredData?.map((data) => (
               <div key={data._id} className=" space-y-3">
-                <div className="w-full flex flex-wrap gap-2 items-center">
+                <div className="w-full flex flex-wrap gap-2 items-start">
                   <h1 className="text-2xl font-medium text-[#ad8d36]">
                     {t("Home.Name")} :
                   </h1>{" "}
@@ -114,7 +115,7 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
                     <h1 className="text-2xl font-medium  text-[#ad8d36]">
                       {t("Home.Choices")} :
                     </h1>{" "}
-                    <h1 className="text-2xl text-gray-200 min-w-[80px] max-w-[367px]">
+                    <h1 className="text-xl text-gray-200 min-w-[80px] max-w-[367px]">
                       {data.choices.join(" - ")}
                     </h1>
                   </div>

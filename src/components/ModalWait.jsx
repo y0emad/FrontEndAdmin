@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { Form } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
 export default function ModalWait(order) {
   const [t, i18n] = useTranslation("global");
@@ -162,7 +162,7 @@ export default function ModalWait(order) {
             onCancel={() => handleCancel("Details")}
           >
             <div className="flex flex-wrap gap-5 mt-8  items-center">
-              <div className=" w-full flex flex-wrap gap-2 items-center ">
+              <div className=" w-full flex flex-wrap gap-2 items-start ">
                 {" "}
                 <h1 className="text-2xl font-medium text-[#ad8d36]">
                   {t("ModalMyPro.Name")} :
@@ -196,7 +196,7 @@ export default function ModalWait(order) {
                   {t("ModalMyPro.File_Name")} :
                 </h1>{" "}
                 <h1 className=" text-xl text-gray-200 min-w-[80px]   max-w-[72%]">
-                  {order.product.file}
+                  <Link to={order.product.file}> {order.product.file}</Link>
                 </h1>
               </div>
               <div className="w-full flex flex-wrap gap-2 items-center mt-5">
@@ -205,14 +205,14 @@ export default function ModalWait(order) {
                 </h1>{" "}
                 {order.product.data.map((item) => (
                   <div key={item._id} className=" space-y-3">
-                    <div className="w-full flex flex-wrap gap-2 items-center">
-                      <h1 className="text-2xl font-medium text-[#ad8d36]">
+                    <div className="w-full flex flex-wrap gap-2 items-start">
+                      <h1 className="text-2xl font-medium text-[#ad8d36]  min-w-[80px]   max-w-[72%]">
                         {t("Home.Name")} :
                       </h1>{" "}
                       <h1 className="text-xl text-gray-200 min-w-[80px]  max-w-[72%]">
                         {item.field_name}
                       </h1>
-                      <h1 className="text-2xl font-medium text-[#ad8d36]">
+                      <h1 className="text-2xl font-medium text-[#ad8d36] ">
                         Value :
                       </h1>{" "}
                       <h1 className="text-xl text-gray-200">{item.value}</h1>
@@ -335,13 +335,3 @@ export default function ModalWait(order) {
     </>
   );
 }
-
-// const loader = async ({ request: { signal } }) => {
-//   const ordersWait = await fetch(
-//     `http://localhost:4000/orders/${}/accept`,
-//     {
-//       signal,
-//     }
-//   ).then((res) => res.json());
-//   return ordersWait;
-// };

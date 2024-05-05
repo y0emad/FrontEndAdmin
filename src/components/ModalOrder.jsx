@@ -1,15 +1,17 @@
-import { Alert, Modal } from "antd";
+import { Alert, Modal, Spin } from "antd";
 import { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { Form } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
+import { LoadingOutlined } from "@ant-design/icons";
 export default function ModalOrder(order) {
   const [t, i18n] = useTranslation("global");
   const [lang, setLang] = useLocalStorage("lang", "ar");
   const [status, setStatus] = useState(order.status);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [userData, setUserData] = useState({});
   const [error, setError] = useState(null);
   // console.log(order);
   useEffect(() => {
@@ -17,16 +19,29 @@ export default function ModalOrder(order) {
   }, [lang]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const [isDetailsUser, setIsDetailsUser] = useState(false);
   const [msg, setMsg] = useState("");
 
   const showModal = (key) => {
-    return key === "Details" ? setIsModalOpen(true) : setIsStatusOpen(true);
+    return key === "Details"
+      ? setIsModalOpen(true)
+      : key === "Status"
+      ? setIsStatusOpen(true)
+      : setIsDetailsUser(true);
   };
   const handleOk = (key) => {
-    return key === "Details" ? setIsModalOpen(false) : setIsStatusOpen(false);
+    return key === "Details"
+      ? setIsModalOpen(false)
+      : key === "Status"
+      ? setIsStatusOpen(false)
+      : setIsDetailsUser(false);
   };
   const handleCancel = (key) => {
-    return key === "Details" ? setIsModalOpen(false) : setIsStatusOpen(false);
+    return key === "Details"
+      ? setIsModalOpen(false)
+      : key === "Status"
+      ? setIsStatusOpen(false)
+      : setIsDetailsUser(false);
   };
   // console.log(message);
   const handleSub = (prodId) => {
@@ -38,7 +53,7 @@ export default function ModalOrder(order) {
         signal,
         headers: {
           "Content-Type": "application/json",
-          authorization: `Bearer  ${localStorage.getItem("tkn")}`,
+          authorization: `Bearer ${localStorage.getItem("tkn")}`,
         },
         body: JSON.stringify({ message }),
         method: "post",
@@ -91,6 +106,39 @@ export default function ModalOrder(order) {
       abortController.abort();
     };
   };
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    fetch(`http://localhost:4000/orders/${order._id}`, {
+      signal,
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("tkn")}`,
+      },
+
+      method: "get",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setUserData(data);
+        // setMsg(data.message);
+        // console.log("data user", data);
+        setError(null);
+      })
+      .catch((error) => {
+        if (error.name !== "AbortError") {
+          setError(error.message);
+        }
+      })
+      .finally(() => setLoading(false));
+  }, [order.id]);
   return (
     <>
       {msg ? (
@@ -120,10 +168,10 @@ export default function ModalOrder(order) {
           <h6 className="font-manrope font-bold text-2xl  leading-9 text-gray-200 w-full max-w-[176px] text-center">
             <button
               onClick={() => showModal("Details")}
-              className="cursor-pointer relative group overflow-hidden border-2 px-8 py-2 border-gray-200"
+              className="cursor-pointer relative group overflow-hidden border-2 px-4 py-2 border-gray-200"
             >
               <span className="font-bold text-[#000915] text-xl relative z-10 group-hover:text-gray-200 duration-500">
-                {t("ModalMyPro.Details")}
+                Order's Details
               </span>
               <span className="absolute top-0 left-0 w-full bg-gray-200 duration-500 group-hover:-translate-x-full h-full"></span>
               <span className="absolute top-0 left-0 w-full bg-gray-200 duration-500 group-hover:translate-x-full h-full"></span>
@@ -133,80 +181,164 @@ export default function ModalOrder(order) {
             </button>
           </h6>
           <Modal
-            title={t("ModalMyPro.Details")}
+            title="Order's Details"
             open={isModalOpen}
             onOk={() => handleOk("Details")}
             key="Details"
             footer={null}
             onCancel={() => handleCancel("Details")}
           >
-            <div className="flex flex-wrap gap-5 mt-8  items-center">
-              <div className=" w-full flex flex-wrap gap-2 items-center ">
-                {" "}
-                <h1 className="text-2xl font-medium text-[#ad8d36]">
-                  Order Id:
-                </h1>{" "}
-                <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
-                  {order._id}
-                </h1>
-              </div>
-
-              <div className=" w-full flex flex-wrap gap-2 items-center ">
-                {" "}
-                <h1 className="text-2xl font-medium text-[#ad8d36]">
-                  User Id :
-                </h1>{" "}
-                <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
-                  {order.user_id}
-                </h1>
-              </div>
-
-              <div className=" w-full flex flex-wrap gap-2 items-center ">
-                {" "}
-                <h1 className="text-2xl font-medium text-[#ad8d36]">
-                  {t("ModalMyPro.Name")} :
-                </h1>{" "}
-                <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
-                  {order.product.product_name}
-                </h1>
-              </div>
-              <div className=" w-full flex flex-wrap gap-2 items-center">
-                {" "}
-                <h1 className="text-2xl font-medium text-[#ad8d36]">
-                  {t("ModalMyPro.Quantity")} :
-                </h1>{" "}
-                <h1 className=" text-xl text-gray-200">
+            {loading ? (
+              <Spin
+                size="large"
+                indicator={
+                  <LoadingOutlined
+                    style={{
+                      fontSize: 24,
+                      color: "#e5e7eb",
+                    }}
+                    spin
+                  />
+                }
+              />
+            ) : (
+              <div className="flex flex-wrap gap-5 mt-8  items-center">
+                <div className=" w-full flex flex-wrap gap-2 items-center ">
                   {" "}
-                  {order.product.quantity}
-                </h1>
-              </div>
-
-              <div className=" w-full flex flex-wrap gap-2 items-center ">
-                {" "}
-                <h1 className="text-2xl font-medium text-[#ad8d36]">
-                  {t("ModalMyPro.File_Name")} :
-                </h1>{" "}
-                <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
-                  {order.product.file}
-                </h1>
-              </div>
-              {order.product.data.map((item) => (
-                <div key={item._id} className=" space-y-3">
-                  <div className="w-full flex flex-wrap gap-2 items-center">
-                    <h1 className="text-2xl font-medium text-[#ad8d36]">
-                      {t("Home.Name")} :
-                    </h1>{" "}
-                    <h1 className="text-xl text-gray-200 min-w-[80px]  max-w-[72%]">
-                      {item.field_name}
-                    </h1>
-                    <h1 className="text-2xl font-medium text-[#ad8d36]">
-                      Value :
-                    </h1>{" "}
-                    <h1 className="text-xl text-gray-200">{item.value}</h1>
-                  </div>
+                  <h1 className="text-2xl font-medium text-[#ad8d36]">
+                    Order Id:
+                  </h1>{" "}
+                  <h1 className=" text-xl text-gray-200 ">{order._id}</h1>
                 </div>
-              ))}
-            </div>
+
+                <div className=" w-full flex flex-wrap gap-2 items-start ">
+                  {" "}
+                  <h1 className="text-2xl font-medium text-[#ad8d36]">
+                    {t("ModalMyPro.Name")} :
+                  </h1>{" "}
+                  <h1 className=" text-xl text-gray-200  min-w-[80px]   max-w-[72%]">
+                    {order.product.product_name}
+                  </h1>
+                </div>
+                <div className=" w-full flex flex-wrap gap-2 items-center">
+                  {" "}
+                  <h1 className="text-2xl font-medium text-[#ad8d36]">
+                    {t("ModalMyPro.Quantity")} :
+                  </h1>{" "}
+                  <h1 className=" text-xl text-gray-200">
+                    {" "}
+                    {order.product.quantity}
+                  </h1>
+                </div>
+
+                <div className=" w-full flex flex-wrap gap-2 items-start ">
+                  {" "}
+                  <h1 className="text-2xl font-medium text-[#ad8d36]">
+                    {t("ModalMyPro.File_Name")} :
+                  </h1>{" "}
+                  <h1 className=" text-xl text-gray-200  min-w-[80px]   max-w-[72%]">
+                    <Link to={order.product.file}>{order.product.file}</Link>
+                  </h1>
+                </div>
+                {order.product.data.map((item) => (
+                  <div key={item._id} className=" space-y-3">
+                    <div className="w-full flex flex-wrap gap-2 items-center">
+                      <h1 className="text-2xl font-medium text-[#ad8d36]">
+                        {t("Home.Name")} :
+                      </h1>{" "}
+                      <h1 className="text-xl text-gray-200">
+                        {item.field_name}
+                      </h1>
+                      <h1 className="text-2xl font-medium text-[#ad8d36]">
+                        Value :
+                      </h1>{" "}
+                      <h1 className="text-xl text-gray-200">{item.value}</h1>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Modal>
+
+          <h6 className="font-manrope font-bold text-2xl  leading-9 text-gray-200 w-full max-w-[176px] text-center">
+            <button
+              onClick={() => showModal("DetailsUser")}
+              className="cursor-pointer relative group overflow-hidden border-2 px-4 py-2 border-gray-200"
+            >
+              <span className="font-bold text-[#000915] text-xl relative z-10 group-hover:text-gray-200 duration-500">
+                User's Details
+              </span>
+              <span className="absolute top-0 left-0 w-full bg-gray-200 duration-500 group-hover:-translate-x-full h-full"></span>
+              <span className="absolute top-0 left-0 w-full bg-gray-200 duration-500 group-hover:translate-x-full h-full"></span>
+
+              <span className="absolute top-0 left-0 w-full bg-gray-200 duration-500 delay-300 group-hover:-translate-y-full h-full"></span>
+              <span className="absolute delay-300 top-0 left-0 w-full bg-gray-200 duration-500 group-hover:translate-y-full h-full"></span>
+            </button>
+          </h6>
+          <Modal
+            title="User's Details"
+            open={isDetailsUser}
+            onOk={() => handleOk("DetailsUser")}
+            key="DetailsUser"
+            footer={null}
+            onCancel={() => handleCancel("DetailsUser")}
+          >
+            {loading ? (
+              <Spin
+                size="large"
+                indicator={
+                  <LoadingOutlined
+                    style={{
+                      fontSize: 24,
+                      color: "#e5e7eb",
+                    }}
+                    spin
+                  />
+                }
+              />
+            ) : (
+              <div className="flex flex-wrap gap-5 mt-8  items-center">
+                <div className=" w-full flex flex-wrap gap-2 items-center ">
+                  {" "}
+                  <h1 className="text-2xl font-medium text-[#ad8d36]">
+                    User Id:
+                  </h1>{" "}
+                  <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
+                    {userData.data?.user_id._id}
+                  </h1>
+                </div>
+
+                <div className=" w-full flex flex-wrap gap-2 items-center ">
+                  {" "}
+                  <h1 className="text-2xl font-medium text-[#ad8d36]">
+                    User Name :
+                  </h1>{" "}
+                  <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
+                    {userData.data?.user_id.username}
+                  </h1>
+                </div>
+                <div className=" w-full flex flex-wrap gap-2 items-center">
+                  {" "}
+                  <h1 className="text-2xl font-medium text-[#ad8d36]">
+                    Email :
+                  </h1>{" "}
+                  <h1 className=" text-xl text-gray-200">
+                    {" "}
+                    {userData.data?.user_id.email}
+                  </h1>
+                </div>
+
+                <div className=" w-full flex flex-wrap gap-2 items-center ">
+                  {" "}
+                  <h1 className="text-2xl font-medium text-[#ad8d36]">
+                    PhoneNumber :
+                  </h1>{" "}
+                  <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
+                    {userData.data?.user_id.phoneNumber}
+                  </h1>
+                </div>
+              </div>
+            )}
           </Modal>
 
           <h6 className="text-gray-200 font-manrope  font-bold text-2xl leading-9 w-full max-w-[176px] text-center">

@@ -381,16 +381,17 @@ export default function ModalOrder(order) {
                     id="status"
                     className=" border   text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-[#ad8d36] focus:border-[#ad8d36]"
                   >
+                    <option value={-1}>1) None</option>
                     <option value={0}>
-                      1) You paid the bill for the book now will be printed
+                      2) You paid the bill for the book now will be printed
                     </option>
                     <option value={1}>
-                      2) Printed of the book is finished
+                      3) Printed of the book is finished
                     </option>
                     <option value={2}>
-                      3) Covered of the book is finished
+                      4) Covered of the book is finished
                     </option>
-                    <option value={3}>4) The book is ready</option>
+                    <option value={3}>5) The book is ready</option>
                   </select>
                 </div>
                 <div>

@@ -47,9 +47,13 @@ function WaitingPage() {
               </span>
             </p>
           </div>
-          {ordersWait.data.map((order) => (
-            <ModalWait {...order} key={order._id} />
-          ))}
+          {ordersWait.message === "No orders found." ? (
+            <h1 className=" text-2xl font-medium">{ordersWait.message}</h1>
+          ) : (
+            ordersWait.data.map((order) => (
+              <ModalWait {...order} key={order._id} />
+            ))
+          )}
         </div>
       </section>
     </div>

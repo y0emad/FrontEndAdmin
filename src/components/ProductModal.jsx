@@ -64,11 +64,11 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
         <div className="text-red-500 ">Error: {error}</div>
       ) : (
         <div className="flex flex-wrap gap-5 mt-8 items-center">
-          <div className="w-full flex flex-wrap gap-2 items-start">
+          <div className="w-full flex flex-wrap gap-2 items-center">
             <h1 className="text-2xl font-medium text-[#ad8d36] ">
               {t("Home.Name")} :
             </h1>{" "}
-            <h1 className="text-xl text-gray-200 min-w-[80px] max-w-[367px]">
+            <h1 className="text-xl text-gray-200 min-w-[80px]  max-w-[72%]">
               {products.name}
             </h1>
           </div>
@@ -76,7 +76,7 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
             <h1 className="text-2xl font-medium text-[#ad8d36]">
               {t("Home.Description")} :
             </h1>{" "}
-            <h1 className="text-xl text-gray-200 min-w-[80px] max-w-[367px]">
+            <h1 className="text-xl text-gray-200 min-w-[80px]  max-w-[72%]">
               {products.description}
             </h1>
           </div>
@@ -84,7 +84,7 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
             <h1 className="text-2xl font-medium text-[#ad8d36]">
               {t("Home.Image")} :
             </h1>{" "}
-            <h1 className="text-xl text-gray-200 min-w-[80px]   max-w-[367px]">
+            <h1 className="text-xl text-gray-200 min-w-[80px]  max-w-[367px]">
               <Link to={products.image}>{products.image}</Link>
             </h1>
           </div>
@@ -94,11 +94,11 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
             </h1>{" "}
             {products.requiredData?.map((data) => (
               <div key={data._id} className=" space-y-3">
-                <div className="w-full flex flex-wrap gap-2 items-start">
+                <div className="w-full flex flex-wrap gap-2 items-center">
                   <h1 className="text-2xl font-medium text-[#ad8d36]">
                     {t("Home.Name")} :
                   </h1>{" "}
-                  <h1 className="text-xl text-gray-200 min-w-[80px] max-w-[367px]">
+                  <h1 className="text-xl text-gray-200 min-w-[80px]  max-w-[72%]">
                     {data.name}
                   </h1>
                 </div>
@@ -111,12 +111,12 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
                   </h1>
                 </div>
                 {data.hasChoices && (
-                  <div className="w-full flex flex-wrap gap-2 items-start">
+                  <div className="w-full flex flex-wrap gap-2 items-center">
                     <h1 className="text-2xl font-medium  text-[#ad8d36]">
                       {t("Home.Choices")} :
                     </h1>{" "}
-                    <h1 className="text-xl text-gray-200 min-w-[80px] max-w-[367px]">
-                      {data.choices.join(" - ")}
+                    <h1 className="text-xl text-gray-200 min-w-[80px]  max-w-[72%]">
+                      {data.choices.join(" , ")}
                     </h1>
                   </div>
                 )}

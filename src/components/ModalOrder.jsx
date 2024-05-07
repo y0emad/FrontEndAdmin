@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { Form, Link } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
+import { use } from "i18next";
 export default function ModalOrder(order) {
   const [t, i18n] = useTranslation("global");
   const [lang, setLang] = useLocalStorage("lang", "ar");
@@ -14,6 +15,10 @@ export default function ModalOrder(order) {
   const [userData, setUserData] = useState({});
   const [error, setError] = useState(null);
   // console.log(order);
+  useEffect(() => {
+    setStatus(order.status);
+    // window.location.reload();
+  }, []);
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang]);
@@ -244,13 +249,7 @@ export default function ModalOrder(order) {
                   <div key={item._id} className=" space-y-3">
                     <div className="w-full flex flex-wrap gap-2 items-center">
                       <h1 className="text-2xl font-medium text-[#ad8d36]">
-                        {t("Home.Name")} :
-                      </h1>{" "}
-                      <h1 className="text-xl text-gray-200">
-                        {item.field_name}
-                      </h1>
-                      <h1 className="text-2xl font-medium text-[#ad8d36]">
-                        Value :
+                        {item.field_name} :
                       </h1>{" "}
                       <h1 className="text-xl text-gray-200">{item.value}</h1>
                     </div>
@@ -366,7 +365,7 @@ export default function ModalOrder(order) {
             onCancel={() => handleCancel("Status")}
           >
             {" "}
-            <Form>
+            <Form onSubmit={(e) => window.location.reload(e)}>
               <div className="grid gap-6  mb-6 mt-10 grid-cols-1">
                 <div>
                   {" "}
@@ -377,7 +376,7 @@ export default function ModalOrder(order) {
                     Status
                   </label>
                   <select
-                    defaultValue={status}
+                    value={status}
                     onChange={(e) => setStatus(e.target.value)}
                     id="status"
                     className=" border   text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-[#ad8d36] focus:border-[#ad8d36]"

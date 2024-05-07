@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Form, useNavigate } from "react-router-dom";
 
 const debounce = (fn, ms = 300) => {
@@ -19,6 +19,11 @@ export function Search() {
     navigate(`?${newSearchParams}`, { replace: true });
   });
 
+  useEffect(() => {
+    const newSearchParams = new URLSearchParams(window.location.search);
+    query.current.focus();
+    query.current.value = newSearchParams.get("query");
+  }, []);
   return (
     <div className="max-w-[350px] mx-auto">
       <Form>

@@ -162,7 +162,7 @@ export default function ModalWait(order) {
             onCancel={() => handleCancel("Details")}
           >
             <div className="flex flex-wrap gap-5 mt-8  items-center">
-              <div className=" w-full flex flex-wrap gap-2 items-start ">
+              <div className=" w-full flex flex-wrap gap-2 items-center ">
                 {" "}
                 <h1 className="text-2xl font-medium text-[#ad8d36]">
                   {t("ModalMyPro.Name")} :
@@ -190,7 +190,7 @@ export default function ModalWait(order) {
                 </h1>
               </div>
 
-              <div className=" w-full flex flex-wrap gap-2 items-start ">
+              <div className=" w-full flex flex-wrap gap-2 items-center ">
                 {" "}
                 <h1 className="text-2xl font-medium text-[#ad8d36]">
                   {t("ModalMyPro.File_Name")} :
@@ -205,17 +205,13 @@ export default function ModalWait(order) {
                 </h1>{" "}
                 {order.product.data.map((item) => (
                   <div key={item._id} className=" space-y-3">
-                    <div className="w-full flex flex-wrap gap-2 items-start">
+                    <div className="w-full flex flex-wrap gap-2 items-center">
                       <h1 className="text-2xl font-medium text-[#ad8d36]  min-w-[80px]   max-w-[72%]">
-                        {t("Home.Name")} :
+                        {item.field_name} :
                       </h1>{" "}
                       <h1 className="text-xl text-gray-200 min-w-[80px]  max-w-[72%]">
-                        {item.field_name}
+                        {item.value}
                       </h1>
-                      <h1 className="text-2xl font-medium text-[#ad8d36] ">
-                        Value :
-                      </h1>{" "}
-                      <h1 className="text-xl text-gray-200">{item.value}</h1>
                     </div>
                   </div>
                 ))}

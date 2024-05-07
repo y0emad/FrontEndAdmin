@@ -12,14 +12,8 @@ import { Alert, Card, Popover } from "antd";
 import "../../index.css";
 import "./home.css";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import { useEffect, useRef, useState } from "react";
-import {
-  Link,
-  useLoaderData,
-  Form,
-  useSearchParams,
-  useNavigate,
-} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLoaderData } from "react-router-dom";
 import ScrollToTop from "react-scroll-to-top";
 import ProductModal from "../../components/ProductModal";
 const { Meta } = Card;
@@ -50,7 +44,7 @@ function Home() {
   }, [lang]);
 
   const handleDelete = async (proId) => {
-    console.log(proId);
+    // console.log(proId);
     try {
       const res = await fetch(`http://localhost:4000/products/${proId}`, {
         method: "delete",
@@ -91,7 +85,7 @@ function Home() {
     }
   };
   const handleShow = async (proId) => {
-    console.log(proId);
+    // console.log(proId);
     try {
       const res = await fetch(`http://localhost:4000/products/show/${proId}`, {
         method: "put",
@@ -195,7 +189,8 @@ function Home() {
           {t("Home.all_products")}
         </h2>
         <div className=" flex justify-evenly  flex-wrap mr-5 ml-5 gap-10 ">
-          {all_products.message === "No products found for the given query." ? (
+          {all_products.message === "No Products found" ||
+          all_products.message === "No products found for the given query." ? (
             <h1 className=" text-2xl font-medium">No products found</h1>
           ) : (
             all_products.data.map((product) => (
@@ -206,13 +201,20 @@ function Home() {
                     width: 300,
                   }}
                   cover={
-                    <img
-                      alt={`${product.name}`}
-                      src={`${product.image}`}
-                      className={`w-full h-64 ${
-                        product.deleted ? "brightness-50" : ""
-                      }`}
-                    />
+                    <>
+                      <img
+                        alt={`${product.name}`}
+                        src={`${product.image}`}
+                        className={`w-full h-64 ${
+                          product.deleted ? "brightness-50 relative" : ""
+                        }`}
+                      />
+                      {product.deleted && (
+                        <div className=" content-center absolute top-[-1px] left-auto text-center text-xl font-medium text-gray-200 !w-[300.2px] h-[60px] rounded-t-lg bg-gradient-to-b from-[#000915] to-[#0009158b]">
+                          The Product Hidden
+                        </div>
+                      )}
+                    </>
                   }
                   actions={[
                     <Popover content="View The Product">
@@ -274,7 +276,8 @@ function Home() {
         </div>
         {alert}
       </div>
-      {all_products.message === "No products found for the given query."
+      {all_products.message === "No Products found" ||
+      all_products.message === "No products found for the given query."
         ? null
         : selectedProduct && (
             <ProductModal

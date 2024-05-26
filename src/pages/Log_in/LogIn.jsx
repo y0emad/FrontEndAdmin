@@ -93,18 +93,19 @@ export function LogIn() {
             onBlur={formikObj.handleBlur}
             value={formikObj.values.email}
             name="email"
-            style={{ fontFamily: " Segoe UI ,fontawesome  " }}
+            
             className={
               LOGIN.input +
-              " mt-5 border w-full text-base px-2 py-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
+              " mt-5 border w-full text-base ps-8 py-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
             }
-            placeholder=" &#xf0e0; E-mail"
+            placeholder="  E-mail"
           />
+          <i className="fa-solid fa-envelope relative " style={{color: "#7f6727" , bottom :"33px", left:"10px"}}></i>
           {formikObj.errors.email && formikObj.touched.email ? (
             <div
               className={
                 LOGIN.alert +
-                " text-red-200 shadow-inner rounded p-3 bg-red-300 mt-2 "
+                " text-red-200 shadow-inner rounded p-3 bg-red-300 "
               }
             >
               {formikObj.errors.email}
@@ -119,18 +120,19 @@ export function LogIn() {
             onBlur={formikObj.handleBlur}
             value={formikObj.values.password}
             name="password"
-            style={{ fontFamily: " Segoe UI ,fontawesome  " }}
+            
             className={
               LOGIN.input +
-              " mt-5 border w-full text-base px-2 py-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
+              " mt-5 border w-full text-base ps-8 py-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
             }
-            placeholder=" &#xf023; Password"
+            placeholder="  Password"
           />
+          <i className="fa-solid fa-lock relative " style={{color: "#7f6727" , bottom :"33px", left:"10px"}}></i>
           {formikObj.errors.password && formikObj.touched.password ? (
             <div
               className={
                 LOGIN.alert +
-                " text-red-200 shadow-inner rounded p-3 bg-red-300 mt-2 "
+                " text-red-200 shadow-inner rounded p-3 bg-red-300  "
               }
             >
               {formikObj.errors.password}

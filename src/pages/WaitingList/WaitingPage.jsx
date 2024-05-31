@@ -64,16 +64,13 @@ function WaitingPage() {
 }
 
 const loader = async ({ request }) => {
-  const ordersWait = await fetch(
-    "https://printing-sys-fojo.vercel.app/orders",
-    {
-      method: "GET",
-      signal: request.signal,
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("tkn")}`,
-      },
-    }
-  ).then((res) => res.json());
+  const ordersWait = await fetch("http://localhost:4000/orders", {
+    method: "GET",
+    signal: request.signal,
+    headers: {
+      authorization: `Bearer ${localStorage.getItem("tkn")}`,
+    },
+  }).then((res) => res.json());
   // console.log(ordersWait);
   return ordersWait;
 };

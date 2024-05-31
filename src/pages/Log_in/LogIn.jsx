@@ -1,11 +1,11 @@
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LOGIN from "./login.module.css";
 import { useFormik } from "formik";
 import axios from "axios";
 import * as Yup from "yup";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { ThreeCircles } from "react-loader-spinner";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { authContext } from "../../Context/authentication";
 import { jwtDecode } from "jwt-decode";
 export function LogIn() {
@@ -14,7 +14,9 @@ export function LogIn() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { setToken } = useContext(authContext);
-
+  useEffect(() => {
+    document.title = "Helwan Printing Press | Log In";
+  }, []);
   async function sendingData(values) {
     setIsLoading(true);
     try {
@@ -93,14 +95,16 @@ export function LogIn() {
             onBlur={formikObj.handleBlur}
             value={formikObj.values.email}
             name="email"
-            
             className={
               LOGIN.input +
               " mt-5 border w-full text-base ps-8 py-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
             }
             placeholder="  E-mail"
           />
-          <i className="fa-solid fa-envelope relative " style={{color: "#7f6727" , bottom :"33px", left:"10px"}}></i>
+          <i
+            className="fa-solid fa-envelope relative "
+            style={{ color: "#7f6727", bottom: "33px", left: "10px" }}
+          ></i>
           {formikObj.errors.email && formikObj.touched.email ? (
             <div
               className={
@@ -120,14 +124,16 @@ export function LogIn() {
             onBlur={formikObj.handleBlur}
             value={formikObj.values.password}
             name="password"
-            
             className={
               LOGIN.input +
               " mt-5 border w-full text-base ps-8 py-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
             }
             placeholder="  Password"
           />
-          <i className="fa-solid fa-lock relative " style={{color: "#7f6727" , bottom :"33px", left:"10px"}}></i>
+          <i
+            className="fa-solid fa-lock relative "
+            style={{ color: "#7f6727", bottom: "33px", left: "10px" }}
+          ></i>
           {formikObj.errors.password && formikObj.touched.password ? (
             <div
               className={
@@ -163,8 +169,6 @@ export function LogIn() {
                 "Login"
               )}
             </button>
-
-
           </div>
         </form>
       </div>

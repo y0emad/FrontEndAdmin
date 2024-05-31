@@ -1,6 +1,6 @@
 import { ExclamationCircleOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Alert, Popover, Spin } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import {
   Form,
@@ -37,6 +37,9 @@ function AddNewProduct() {
     setChoices(choices.slice(0, -1));
     setRequiredData(requiredData.slice(0, -1));
   };
+  useEffect(() => {
+    document.title = "Helwan Printing Press | Add New Product";
+  }, []);
 
   return (
     <div>

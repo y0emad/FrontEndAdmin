@@ -13,6 +13,9 @@ function WaitingPage() {
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang]);
+  useEffect(() => {
+    document.title = "Helwan Printing Press |  Waiting List ";
+  }, []);
   return ordersWait.message === "No orders found." ? (
     <h2 className="title font-manrope  mt-9 font-bold text-4xl leading-10 mb-8 text-center text-gray-200">
       {ordersWait.message}

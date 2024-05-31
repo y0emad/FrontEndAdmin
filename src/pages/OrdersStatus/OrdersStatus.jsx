@@ -12,6 +12,9 @@ function OrdersStatus() {
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang]);
+  useEffect(() => {
+    document.title = "Helwan Printing Press | Orders Status ";
+  }, []);
   return (
     <div>
       {" "}

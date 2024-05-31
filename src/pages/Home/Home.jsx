@@ -42,7 +42,9 @@ function Home() {
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang]);
-
+  useEffect(() => {
+    document.title = "Helwan Printing Press";
+  }, []);
   const handleDelete = async (proId) => {
     // console.log(proId);
     try {

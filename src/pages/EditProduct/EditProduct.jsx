@@ -17,7 +17,9 @@ function EditProduct() {
   const [requiredData, setRequiredData] = useState([]);
   const { state } = useNavigation();
   const product = useLoaderData();
-
+  useEffect(() => {
+    document.title = `Helwan Printing Press | Edit ${product.data.name}`;
+  }, []);
   useEffect(() => {
     setNumber(product.data.requiredData.length);
     globalimg = product.data.image;
@@ -300,7 +302,7 @@ const action = async ({ request, signal, params }) => {
 };
 const loader = async ({ request: { signal }, params }) => {
   const product = await fetch(
-    `https://printing-sys-fojo.vercel.app/products/${params.Pro_id}`,
+    `http://localhost:4000/products/${params.Pro_id}`,
     { signal }
   );
   return product;

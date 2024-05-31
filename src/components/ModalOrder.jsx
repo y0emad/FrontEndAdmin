@@ -235,6 +235,18 @@ export default function ModalOrder(order) {
                     {order.product.quantity}
                   </h1>
                 </div>
+                {order.product.notes && (
+                  <div className=" w-full flex flex-wrap gap-2 items-center">
+                    {" "}
+                    <h1 className="text-2xl font-medium text-[#ad8d36]">
+                      Notes :
+                    </h1>{" "}
+                    <h1 className=" text-xl text-gray-200">
+                      {" "}
+                      {order.product.notes}
+                    </h1>
+                  </div>
+                )}
 
                 <div className=" w-full flex flex-wrap gap-2 items-start ">
                   {" "}

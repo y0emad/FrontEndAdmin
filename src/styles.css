@@ -136,6 +136,17 @@
   > span:hover {
   color: #000915 !important;
 }
+
+.ant-picker-suffix {
+  color: #e5e7eb !important;
+}
+.ant-picker-clear {
+  color: #e5e7eb !important;
+}
+.ant-picker-input-placeholder > input {
+  color: #e5e7eb !important;
+}
+
 body {
   padding: 0;
   margin: 0;

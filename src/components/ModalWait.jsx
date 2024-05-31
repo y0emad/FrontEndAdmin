@@ -1,4 +1,4 @@
-import { Alert, Modal, Spin } from "antd";
+import { Alert, DatePicker, Modal, Spin } from "antd";
 import { useEffect, useRef, useState } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,7 @@ export default function ModalWait(order) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [msg, setMsg] = useState("");
+  const [dateString, setDateString] = useState("");
   const showModal = (key) => {
     return key === "Details" ? setIsModalOpen(true) : setIsStatusOpen(true);
   };
@@ -27,6 +28,10 @@ export default function ModalWait(order) {
   };
   const handleCancel = (key) => {
     return key === "Details" ? setIsModalOpen(false) : setIsStatusOpen(false);
+  };
+  const onChange = (date, dateString) => {
+    setDateString(dateString);
+    console.log(dateString);
   };
   const handleChangePay = (e) => {
     setPaymentCode(e.target.value);
@@ -45,7 +50,11 @@ export default function ModalWait(order) {
         "Content-Type": "application/json",
         authorization: `Bearer ${localStorage.getItem("tkn")}`,
       },
-      body: JSON.stringify({ totalCost: totalCost, paymentCode: paymentCode }),
+      body: JSON.stringify({
+        totalCost: totalCost,
+        paymentCode: paymentCode,
+        deliveryTime: dateString,
+      }),
       method: "put",
     })
       .then((res) => {
@@ -65,7 +74,14 @@ export default function ModalWait(order) {
           setError(error.message);
         }
       })
-      .finally(() => setLoading(false));
+
+      .finally(() => {
+        setLoading(false);
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 200);
+      });
 
     return () => {
       abortController.abort();
@@ -291,6 +307,26 @@ export default function ModalWait(order) {
                     required
                   />
                 </div>
+                <div>
+                  {" "}
+                  <label
+                    htmlFor="deliveryTime"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Delivery Time
+                  </label>
+                  <DatePicker
+                    required
+                    className="border focus-within:!bg-gray-700 hover:bg-gray-700 focus:bg-gray-700  active:bg-gray-700 text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600  !text-gray-200  hover:border-gray-600 focus:border-gray-600 active:border-gray-600 placeholder-shown:text-gray-200 placeholder:text-gray-200"
+                    onChange={onChange}
+                    placeholder="Delivery Time"
+                    format={{
+                      format: "YYYY-MM-DD",
+                      type: "mask",
+                    }}
+                  />
+                </div>
+
                 <div className="gap-5 flex">
                   <button
                     disabled={loading}

@@ -9,6 +9,8 @@ import {
   useLoaderData,
   useNavigation,
 } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import useLocalStorage from "../../hooks/useLocalStorage";
 let globalNumber = 0;
 let globalimg = "";
 function EditProduct() {
@@ -16,7 +18,13 @@ function EditProduct() {
   const [choices, setChoices] = useState([]);
   const [requiredData, setRequiredData] = useState([]);
   const { state } = useNavigation();
+  const [t, i18n] = useTranslation("global");
+  const [lang, setLang] = useLocalStorage("lang", "ar");
   const product = useLoaderData();
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang]);
+
   useEffect(() => {
     document.title = `Helwan Printing Press | Edit ${product.data.name}`;
   }, []);
@@ -64,7 +72,7 @@ function EditProduct() {
       <section>
         <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
           <h2 className=" text-3xl font-bold text-gray-200 mb-8">
-            Update a Product
+            {t("EditProduct.Update")}
           </h2>
           <Form method="put" encType="multipart/form-data">
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
@@ -73,7 +81,7 @@ function EditProduct() {
                   htmlFor="name"
                   className="block mb-2 text-sm font-medium text-gray-200"
                 >
-                  Product Name
+                  {t("EditProduct.ProductName")}
                 </label>
                 <input
                   type="text"
@@ -82,7 +90,7 @@ function EditProduct() {
                   required
                   defaultValue={product.data.name}
                   className="bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Type product name"
+                  placeholder={t("EditProduct.ProductName")}
                 />
               </div>
 
@@ -91,7 +99,7 @@ function EditProduct() {
                   htmlFor="description"
                   className="block mb-2 text-sm font-medium text-gray-200 dark:text-gray-200"
                 >
-                  Description
+                  {t("EditProduct.Description")}
                 </label>
                 <textarea
                   id="description"
@@ -100,7 +108,7 @@ function EditProduct() {
                   required
                   defaultValue={product.data.description}
                   className="block p-2.5 w-full text-sm text-gray-200 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Your description here"
+                  placeholder={t("EditProduct.Ydeschere")}
                 ></textarea>
               </div>
             </div>
@@ -110,7 +118,7 @@ function EditProduct() {
                 className="block mb-2 text-sm font-medium text-gray-200 dark:text-white"
                 htmlFor="large_size"
               >
-                Update Image
+                {t("EditProduct.UpdateImage")}{" "}
               </label>
               <input
                 className="block w-full text-lg text-gray-200 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -127,7 +135,7 @@ function EditProduct() {
                     htmlFor={`name-${index}`}
                     className="block mb-2 text-sm font-medium text-gray-200"
                   >
-                    Name {index + 1}
+                    {t("EditProduct.Name")} {index + 1}
                   </label>
                   <input
                     defaultValue={field.name}
@@ -136,7 +144,7 @@ function EditProduct() {
                     name={`name-${index}`}
                     id={`name-${index}`}
                     className="bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type product name"
+                    placeholder={t("EditProduct.Name")}
                   />
                 </div>
                 <div className="sm:col-span-2 mb-5">
@@ -144,7 +152,7 @@ function EditProduct() {
                     htmlFor={`required-${index}`}
                     className="block mb-2 text-sm font-medium text-gray-200"
                   >
-                    Required {index + 1}
+                    {t("EditProduct.Required")} {index + 1}
                   </label>
                   <select
                     id={`required-${index}`}
@@ -152,8 +160,8 @@ function EditProduct() {
                     defaultValue={field.required}
                     className="text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value={false}>No</option>
-                    <option value={true}>Yes</option>
+                    <option value={false}>{t("EditProduct.No")}</option>
+                    <option value={true}>{t("EditProduct.Yes")}</option>
                   </select>
                 </div>
                 <div className="sm:col-span-2 mb-5">
@@ -161,7 +169,7 @@ function EditProduct() {
                     htmlFor={`hasChoices-${index}`}
                     className="block mb-2 text-sm font-medium text-gray-200"
                   >
-                    Has Choices {index + 1}
+                    {t("EditProduct.HasChoices")} {index + 1}
                   </label>
 
                   <select
@@ -171,8 +179,12 @@ function EditProduct() {
                     onChange={(e) => handleChoicesChange(index, e.target.value)}
                     className="text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value={Boolean(false)}>No</option>
-                    <option value={Boolean(true)}>Yes</option>
+                    <option value={Boolean(false)}>
+                      {t("EditProduct.No")}
+                    </option>
+                    <option value={Boolean(true)}>
+                      {t("EditProduct.Yes")}
+                    </option>
                     {(globalNumber = number)}
                   </select>
                 </div>
@@ -182,8 +194,8 @@ function EditProduct() {
                     htmlFor={`choices-${index}`}
                     className="block mb-2 text-sm font-medium text-gray-200"
                   >
-                    Choices {index + 1}
-                    <Popover content="Must be in this format: Red,Black,Blue">
+                    {t("EditProduct.Choices")} {index + 1}
+                    <Popover content={t("EditProduct.format")}>
                       <ExclamationCircleOutlined className="text-[#b59439] ms-2" />
                     </Popover>
                   </label>
@@ -194,7 +206,7 @@ function EditProduct() {
                     pattern="(\w+(?: \w+)*,?)+"
                     defaultValue={field.choices}
                     className="bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Like Red,Black,Blue"
+                    placeholder={t("EditProduct.Like")}
                     {...(choices[index]
                       ? { required: true }
                       : { required: false })}
@@ -222,14 +234,14 @@ function EditProduct() {
                   }
                 />
               ) : (
-                "Update product"
+                t("EditProduct.Update")
               )}
             </button>
             <Link
               to=".."
               className="inline-flex border-2 border-[#7f6727] items-center mx-5 px-5 duration-300 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-gray-200 bg-transparent rounded-lg focus:ring-2 focus:ring-[#7f6727] dark:focus:ring-[#7f6727] hover:bg-[#7f6727]"
             >
-              Cancel
+              {t("EditProduct.Cancel")}
             </Link>
           </Form>
           <button
@@ -237,7 +249,7 @@ function EditProduct() {
             disabled={state === "submitting"}
             className="inline-flex items-center px-5 duration-300 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-[#000915] bg-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-200 hover:bg-[#7f6727]"
           >
-            Add Required Data
+            {t("EditProduct.AddRequired")}
           </button>
           <button
             type="button"
@@ -245,7 +257,7 @@ function EditProduct() {
             onClick={removeRequiredData}
             className="inline-flex border-2 border-[#7f6727] items-center mx-5 px-5 duration-300 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-gray-200 bg-transparent rounded-lg focus:ring-2 focus:ring-[#7f6727] dark:focus:ring-[#7f6727] hover:bg-[#7f6727]"
           >
-            Remove Required Data
+            {t("EditProduct.RemoveRequired")}
           </button>
         </div>
       </section>

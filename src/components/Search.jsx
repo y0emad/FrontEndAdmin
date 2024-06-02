@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Form, useNavigate } from "react-router-dom";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const debounce = (fn, ms = 300) => {
   let timeoutId;
@@ -10,6 +12,11 @@ const debounce = (fn, ms = 300) => {
 };
 
 export function Search() {
+  const [t, i18n] = useTranslation("global");
+  const [lang, setLang] = useLocalStorage("lang", "ar");
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang]);
   const query = useRef(null);
   const navigate = useNavigate();
 
@@ -31,7 +38,7 @@ export function Search() {
           htmlFor="query"
           className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
         >
-          Search
+          {t("Home.Search")}
         </label>
         <div className="relative my-8">
           <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -58,14 +65,14 @@ export function Search() {
             ref={query}
             onChange={handleSearch}
             className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-200 dark:border-gray-200 dark:placeholder-[#3b3c3c] dark:text-[#000915] dark:focus:ring-[#000915] dark:focus:border-[#000915]"
-            placeholder="Search for products..."
+            placeholder={t("Home.Searforprod")}
             required
           />
           <button
             type="submit"
             className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-[#7f6727] duration-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-[#000915]"
           >
-            Search
+            {t("Home.Search")}
           </button>
         </div>
       </Form>

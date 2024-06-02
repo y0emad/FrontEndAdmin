@@ -5,7 +5,7 @@
     "Order'sStatus": "Order's Status",
     "TheWaitingList": "The Waiting List",
     "Log_in": "Log in",
-    "Log_out":"Log Out"
+    "Log_out": "Log Out"
   },
   "footer": {
     "copyright": "all rights reserved © the electronic portal of the scientific calculation Center 2024"
@@ -24,7 +24,16 @@
     "stYes": "yes",
     "stNo": "no",
     "HasChoices": "Has Choices",
-    "Choices": "Choices"
+    "Choices": "Choices",
+    "Search": "Search",
+    "Searforprod": "Search for products...",
+    "TheProdHidd": "The Product Hidden",
+    "View": "View The Product",
+    "Edit": "Edit The Product",
+    "Delete": "Delete The Product",
+    "Show": "Show The Product",
+    "Hide": "Hide The Product",
+    "Nofound": "No products found"
   },
 
   "Product": {
@@ -36,23 +45,67 @@
     "Sending": "Sending...",
     "Cancel": "Cancel"
   },
-  "ModalMyPro": {
+  "OrderStatus": {
+    "Order'sStatus": "Order's Status",
+    "ProductName": "Product Name",
     "Product": "Product",
     "Details": "Details",
     "Status": "Status",
-    "Waiting": "Waiting for a response",
-    "Accept": "Accepted",
-    "Deny": "Rejected",
+    "Accept": "Accept",
+    "Deny": "Reject",
     "StatusOfAccept": "Status Of Order",
     "Name": "Name",
-
     "File_Name": "File Name",
     "Quantity": "Quantity",
-    "My_Projects": "My Projects",
-    "Received": "Received",
     "stat1": "You paid the bill for the book now will be printed.",
     "stat2": "Printed of the book is finished.",
     "stat3": "Covered of the book is finished.",
-    "stat4": "The book is ready."
+    "stat4": "The book is ready.",
+    "Order'sDetails": "Order's Details",
+    "OrderId": "Order Id :",
+    "Notes": "Notes :",
+    "User'sDetails": "User's Details",
+    "UserId": "User Id :",
+    "UserName": "User Name :",
+    "Email": "Email :",
+    "PhoneNumber": "PhoneNumber :",
+    "None": "None",
+    "MessageToUser": "Message To User",
+    "Message": "Message",
+    "Submit": "Submit",
+    "Noacceptedfound": "No accepted orders found.",
+
+    "Nofound": "No orders found.",
+    "WaitingList": "Waiting List",
+    "Response": "Response",
+    "TotalCost": "Total Cost",
+    "PaymentCode": "Payment Code",
+    "DeliveryTime": "Delivery Time",
+    "Cancel": "Cancel"
+  },
+  "Login": {
+    "Email": "Email",
+    "Password": "Password",
+    "Login": "Login"
+  },
+  "EditProduct": {
+    "Update": "Update The Product",
+    "ProductName": "Product Name",
+    "Description": "Description",
+    "Ydeschere": "Your description here",
+    "UpdateImage": "Update Image",
+    "Name": "Name",
+    "Required": "Required",
+    "Yes": "Yes",
+    "No": "No",
+    "HasChoices": "Has Choices",
+    "Choices": "Choices",
+    "Like": "Like Red,Black,Blue",
+    "format": "Must be in this format: Red,Black,Blue",
+    "Cancel": "Cancel",
+    "AddRequired": "Add Required Data",
+    "RemoveRequired": "Remove Required Data",
+    "AddNewProduct": "Add The Product",
+    "Image": "Upload Image"
   }
 }

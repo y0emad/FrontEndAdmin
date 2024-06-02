@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { Form, Link } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
-import { use } from "i18next";
+
 export default function ModalOrder(order) {
   const [t, i18n] = useTranslation("global");
   const [lang, setLang] = useLocalStorage("lang", "ar");
@@ -176,7 +176,7 @@ export default function ModalOrder(order) {
               className="cursor-pointer relative group overflow-hidden border-2 px-4 py-2 border-gray-200"
             >
               <span className="font-bold text-[#000915] text-xl relative z-10 group-hover:text-gray-200 duration-500">
-                Order's Details
+                {t("OrderStatus.Order'sDetails")}
               </span>
               <span className="absolute top-0 left-0 w-full bg-gray-200 duration-500 group-hover:-translate-x-full h-full"></span>
               <span className="absolute top-0 left-0 w-full bg-gray-200 duration-500 group-hover:translate-x-full h-full"></span>
@@ -186,7 +186,7 @@ export default function ModalOrder(order) {
             </button>
           </h6>
           <Modal
-            title="Order's Details"
+            title={t("OrderStatus.Order'sDetails")}
             open={isModalOpen}
             onOk={() => handleOk("Details")}
             key="Details"
@@ -211,7 +211,7 @@ export default function ModalOrder(order) {
                 <div className=" w-full flex flex-wrap gap-2 items-center ">
                   {" "}
                   <h1 className="text-2xl font-medium text-[#ad8d36]">
-                    Order Id:
+                    {t("OrderStatus.OrderId")}
                   </h1>{" "}
                   <h1 className=" text-xl text-gray-200 ">{order._id}</h1>
                 </div>
@@ -219,7 +219,7 @@ export default function ModalOrder(order) {
                 <div className=" w-full flex flex-wrap gap-2 items-start ">
                   {" "}
                   <h1 className="text-2xl font-medium text-[#ad8d36]">
-                    {t("ModalMyPro.Name")} :
+                    {t("OrderStatus.Name")} :
                   </h1>{" "}
                   <h1 className=" text-xl text-gray-200  min-w-[80px]   max-w-[72%]">
                     {order.product.product_name}
@@ -228,7 +228,7 @@ export default function ModalOrder(order) {
                 <div className=" w-full flex flex-wrap gap-2 items-center">
                   {" "}
                   <h1 className="text-2xl font-medium text-[#ad8d36]">
-                    {t("ModalMyPro.Quantity")} :
+                    {t("OrderStatus.Quantity")} :
                   </h1>{" "}
                   <h1 className=" text-xl text-gray-200">
                     {" "}
@@ -239,7 +239,7 @@ export default function ModalOrder(order) {
                   <div className=" w-full flex flex-wrap gap-2 items-center">
                     {" "}
                     <h1 className="text-2xl font-medium text-[#ad8d36]">
-                      Notes :
+                      {t("OrderStatus.Notes")} :
                     </h1>{" "}
                     <h1 className=" text-xl text-gray-200">
                       {" "}
@@ -251,7 +251,7 @@ export default function ModalOrder(order) {
                 <div className=" w-full flex flex-wrap gap-2 items-start ">
                   {" "}
                   <h1 className="text-2xl font-medium text-[#ad8d36]">
-                    {t("ModalMyPro.File_Name")} :
+                    {t("OrderStatus.File_Name")} :
                   </h1>{" "}
                   <h1 className=" text-xl text-gray-200  min-w-[80px]   max-w-[72%]">
                     <Link to={order.product.file}>{order.product.file}</Link>
@@ -271,13 +271,13 @@ export default function ModalOrder(order) {
             )}
           </Modal>
 
-          <h6 className="font-manrope font-bold text-2xl  leading-9 text-gray-200 w-full max-w-[176px] text-center">
+          <h6 className="font-manrope font-bold text-2xl text-nowrap  leading-9 text-gray-200 w-full max-w-[176px] text-center">
             <button
               onClick={() => showModal("DetailsUser")}
               className="cursor-pointer relative group overflow-hidden border-2 px-4 py-2 border-gray-200"
             >
               <span className="font-bold text-[#000915] text-xl relative z-10 group-hover:text-gray-200 duration-500">
-                User's Details
+                {t("OrderStatus.User'sDetails")}
               </span>
               <span className="absolute top-0 left-0 w-full bg-gray-200 duration-500 group-hover:-translate-x-full h-full"></span>
               <span className="absolute top-0 left-0 w-full bg-gray-200 duration-500 group-hover:translate-x-full h-full"></span>
@@ -287,7 +287,7 @@ export default function ModalOrder(order) {
             </button>
           </h6>
           <Modal
-            title="User's Details"
+            title={t("OrderStatus.User'sDetails")}
             open={isDetailsUser}
             onOk={() => handleOk("DetailsUser")}
             key="DetailsUser"
@@ -312,7 +312,7 @@ export default function ModalOrder(order) {
                 <div className=" w-full flex flex-wrap gap-2 items-center ">
                   {" "}
                   <h1 className="text-2xl font-medium text-[#ad8d36]">
-                    User Id:
+                    {t("OrderStatus.UserId")}
                   </h1>{" "}
                   <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
                     {userData.data?.user_id._id}
@@ -322,7 +322,7 @@ export default function ModalOrder(order) {
                 <div className=" w-full flex flex-wrap gap-2 items-center ">
                   {" "}
                   <h1 className="text-2xl font-medium text-[#ad8d36]">
-                    User Name :
+                    {t("OrderStatus.UserName")}
                   </h1>{" "}
                   <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
                     {userData.data?.user_id.username}
@@ -331,7 +331,7 @@ export default function ModalOrder(order) {
                 <div className=" w-full flex flex-wrap gap-2 items-center">
                   {" "}
                   <h1 className="text-2xl font-medium text-[#ad8d36]">
-                    Email :
+                    {t("OrderStatus.Email")}
                   </h1>{" "}
                   <h1 className=" text-xl text-gray-200">
                     {" "}
@@ -342,7 +342,7 @@ export default function ModalOrder(order) {
                 <div className=" w-full flex flex-wrap gap-2 items-center ">
                   {" "}
                   <h1 className="text-2xl font-medium text-[#ad8d36]">
-                    PhoneNumber :
+                    {t("OrderStatus.PhoneNumber")}
                   </h1>{" "}
                   <h1 className=" text-xl text-gray-200 min-w-[80px] max-w-[367px]">
                     {userData.data?.user_id.phoneNumber}
@@ -358,7 +358,7 @@ export default function ModalOrder(order) {
               className="cursor-pointer relative group overflow-hidden border-2 px-8 py-2 border-[#ad8d36]"
             >
               <span className="font-bold text-[#000915] text-xl relative z-10 group-hover:text-gray-200 duration-500">
-                Status
+                {t("OrderStatus.Status")}
               </span>
               <span className="absolute top-0 left-0 w-full bg-[#ad8d36] duration-500 group-hover:-translate-x-full h-full"></span>
               <span className="absolute top-0 left-0 w-full bg-[#ad8d36] duration-500 group-hover:translate-x-full h-full"></span>
@@ -369,7 +369,7 @@ export default function ModalOrder(order) {
           </h6>
 
           <Modal
-            title="Status Of Order"
+            title={t("OrderStatus.StatusOfAccept")}
             open={isStatusOpen}
             onOk={() => handleOk("Status")}
             key="Status"
@@ -385,7 +385,7 @@ export default function ModalOrder(order) {
                     htmlFor="status"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200"
                   >
-                    Status
+                    {t("OrderStatus.Status")}
                   </label>
                   <select
                     value={status}
@@ -393,17 +393,11 @@ export default function ModalOrder(order) {
                     id="status"
                     className=" border   text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-[#ad8d36] focus:border-[#ad8d36]"
                   >
-                    <option value={-1}>1) None</option>
-                    <option value={0}>
-                      2) You paid the bill for the book now will be printed
-                    </option>
-                    <option value={1}>
-                      3) Printed of the book is finished
-                    </option>
-                    <option value={2}>
-                      4) Covered of the book is finished
-                    </option>
-                    <option value={3}>5) The book is ready</option>
+                    <option value={-1}>1) {t("OrderStatus.None")}</option>
+                    <option value={0}>2) {t("OrderStatus.stat1")}</option>
+                    <option value={1}>3) {t("OrderStatus.stat2")}</option>
+                    <option value={2}>4) {t("OrderStatus.stat3")}</option>
+                    <option value={3}>5) {t("OrderStatus.stat4")}</option>
                   </select>
                 </div>
                 <div>
@@ -411,7 +405,7 @@ export default function ModalOrder(order) {
                     htmlFor="message"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Message To User
+                    {t("OrderStatus.MessageToUser")}
                   </label>
                   <input
                     type="text"
@@ -419,7 +413,7 @@ export default function ModalOrder(order) {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Message"
+                    placeholder={t("OrderStatus.Message")}
                   />
                 </div>
                 <div className=" gap-5 flex ">
@@ -427,7 +421,7 @@ export default function ModalOrder(order) {
                     onClick={() => handleSub(order._id)}
                     className="  py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-200 bg-[#7f6727] hover:bg-gray-200 duration-300 hover:text-[#000915] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7f6727]"
                   >
-                    Submit
+                    {t("OrderStatus.Submit")}
                   </button>
                   {/* <button
                     onClick={() => handleCancel("Status")}

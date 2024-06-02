@@ -18,7 +18,7 @@ function WaitingPage() {
   }, []);
   return ordersWait.message === "No orders found." ? (
     <h2 className="title font-manrope  mt-9 font-bold text-4xl leading-10 mb-8 text-center text-gray-200">
-      {ordersWait.message}
+      {t("OrderStatus.Nofound")}
     </h2>
   ) : (
     <div>
@@ -38,15 +38,15 @@ function WaitingPage() {
       <section className="py-24 relative">
         <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
           <h2 className="title font-manrope font-bold text-4xl leading-10 mb-8 text-center text-gray-200">
-            Waiting List
+            {t("OrderStatus.WaitingList")}
           </h2>
           <div className="hidden lg:grid grid-cols-2 py-6">
             <div className="font-normal text-xl leading-8 text-gray-200">
-              Product Name
+              {t("OrderStatus.ProductName")}
             </div>
             <p className="font-normal text-xl leading-8 text-gray-200 justify-evenly flex items-center  ">
               <span className="w-full max-w-[176px] text-center ms-[195px]">
-                Response
+                {t("OrderStatus.Response")}
               </span>
             </p>
           </div>

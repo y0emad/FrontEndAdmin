@@ -9,13 +9,19 @@ import {
   useActionData,
   useNavigation,
 } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import useLocalStorage from "../../hooks/useLocalStorage";
 let globalNumber = 0;
 
 function AddNewProduct() {
   const [number, setNumber] = useState(0);
   const [choices, setChoices] = useState([]);
   const [requiredData, setRequiredData] = useState([]);
-
+  const [t, i18n] = useTranslation("global");
+  const [lang, setLang] = useLocalStorage("lang", "ar");
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang]);
   const { state } = useNavigation();
   const errorAlert = useActionData();
   const handleChoicesChange = (index) => {
@@ -55,7 +61,7 @@ function AddNewProduct() {
       <section>
         <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
           <h2 className=" text-3xl font-bold text-gray-200 mb-8">
-            Add a Product
+            {t("EditProduct.AddNewProduct")}
           </h2>
 
           <Form method="post" encType="multipart/form-data">
@@ -65,14 +71,14 @@ function AddNewProduct() {
                   htmlFor="name"
                   className="block mb-2 text-sm font-medium text-gray-200"
                 >
-                  Product Name
+                  {t("EditProduct.ProductName")}
                 </label>
                 <input
                   type="text"
                   name="name"
                   id="name"
                   className="bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Type product name"
+                  placeholder={t("EditProduct.ProductName")}
                   required
                 />
               </div>
@@ -82,7 +88,7 @@ function AddNewProduct() {
                   htmlFor="description"
                   className="block mb-2 text-sm font-medium text-gray-200 dark:text-gray-200"
                 >
-                  Description
+                  {t("EditProduct.Description")}
                 </label>
                 <textarea
                   id="description"
@@ -90,7 +96,7 @@ function AddNewProduct() {
                   rows="8"
                   required
                   className="block p-2.5 w-full text-sm text-gray-200 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  placeholder="Your description here"
+                  placeholder={t("EditProduct.Ydeschere")}
                 ></textarea>
               </div>
             </div>
@@ -100,7 +106,7 @@ function AddNewProduct() {
                 className="block mt-4  mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 htmlFor="image"
               >
-                Image
+                {t("EditProduct.Image")}
               </label>
               <input
                 id="image"
@@ -119,14 +125,14 @@ function AddNewProduct() {
                     htmlFor={`name-${i}`}
                     className="block mb-2 text-sm font-medium text-gray-200"
                   >
-                    Name {i + 1}
+                    {t("EditProduct.Name")} {i + 1}
                   </label>
                   <input
                     type="text"
                     name={`name-${i}`}
                     id={`name-${i}`}
                     className="bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Type product name"
+                    placeholder={t("EditProduct.Name")}
                     required
                   />
                 </div>
@@ -135,7 +141,7 @@ function AddNewProduct() {
                     htmlFor={`required-${i}`}
                     className="block mb-2 text-sm font-medium text-gray-200"
                   >
-                    Required {i + 1}
+                    {t("EditProduct.Required")} {i + 1}
                   </label>
                   <select
                     id={`required-${i}`}
@@ -144,8 +150,8 @@ function AddNewProduct() {
                     required
                     className="text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value={"false"}>No</option>
-                    <option value={"true"}>Yes</option>
+                    <option value={"false"}>{t("EditProduct.No")}</option>
+                    <option value={"true"}>{t("EditProduct.Yes")}</option>
                   </select>
                 </div>
                 <div className="sm:col-span-2 mb-5">
@@ -153,7 +159,7 @@ function AddNewProduct() {
                     htmlFor={`hasChoices-${i}`}
                     className="block mb-2 text-sm font-medium text-gray-200"
                   >
-                    Has Choices {i + 1}
+                    {t("EditProduct.HasChoices")} {i + 1}
                   </label>
                   <select
                     id={`hasChoices-${i}`}
@@ -162,8 +168,8 @@ function AddNewProduct() {
                     required
                     className="text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value={"false"}>No</option>
-                    <option value={"true"}>Yes</option>
+                    <option value={"false"}>{t("EditProduct.No")}</option>
+                    <option value={"true"}>{t("EditProduct.Yes")}</option>
                     {(globalNumber = number)}
                   </select>
                 </div>
@@ -173,8 +179,8 @@ function AddNewProduct() {
                     htmlFor={`choices-${i}`}
                     className="block mb-2 text-sm font-medium text-gray-200"
                   >
-                    Choices {i + 1}{" "}
-                    <Popover content="Must be in this format: Red,Black,Blue">
+                    {t("EditProduct.Choices")} {i + 1}{" "}
+                    <Popover content={t("EditProduct.format")}>
                       <ExclamationCircleOutlined className="text-[#b59439] ms-2" />
                     </Popover>
                   </label>
@@ -184,7 +190,7 @@ function AddNewProduct() {
                     name={`choices-${i}`}
                     id={`choices-${i}`}
                     className="bg-gray-50 border border-gray-300 text-gray-200 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-200 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    placeholder="Like Red,Black,Blue"
+                    placeholder={t("EditProduct.Like")}
                     required={choices[i]}
                     disabled={!choices[i]}
                   />
@@ -209,14 +215,14 @@ function AddNewProduct() {
                   }
                 />
               ) : (
-                "Add product"
+                t("EditProduct.AddNewProduct")
               )}
             </button>
             <Link
               to=".."
               className="inline-flex border-2 border-[#7f6727] items-center mx-5 px-5 duration-300 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-gray-200 bg-transparent rounded-lg focus:ring-2 focus:ring-[#7f6727] dark:focus:ring-[#7f6727] hover:bg-[#7f6727]"
             >
-              Cancel
+              {t("EditProduct.Cancel")}
             </Link>
           </Form>
 
@@ -225,7 +231,7 @@ function AddNewProduct() {
             disabled={state === "submitting"}
             className="inline-flex items-center px-5 duration-300 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-[#000915] bg-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-200 hover:bg-[#7f6727]"
           >
-            Add Required Data
+            {t("EditProduct.AddRequired")}
           </button>
           <button
             type="button"
@@ -233,7 +239,7 @@ function AddNewProduct() {
             onClick={removeRequiredData}
             className="inline-flex border-2 border-[#7f6727] items-center mx-5 px-5 duration-300 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-gray-200 bg-transparent rounded-lg focus:ring-2 focus:ring-[#7f6727] dark:focus:ring-[#7f6727] hover:bg-[#7f6727]"
           >
-            Remove Required Data
+            {t("EditProduct.RemoveRequired")}
           </button>
         </div>
       </section>

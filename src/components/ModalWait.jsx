@@ -160,7 +160,7 @@ export default function ModalWait(order) {
               className="cursor-pointer relative group overflow-hidden border-2 px-8 py-2 border-gray-200"
             >
               <span className="font-bold text-[#000915] text-xl relative z-10 group-hover:text-gray-200 duration-500">
-                {t("ModalMyPro.Details")}
+                {t("OrderStatus.Details")}
               </span>
               <span className="absolute top-0 left-0 w-full bg-gray-200 duration-500 group-hover:-translate-x-full h-full"></span>
               <span className="absolute top-0 left-0 w-full bg-gray-200 duration-500 group-hover:translate-x-full h-full"></span>
@@ -170,7 +170,7 @@ export default function ModalWait(order) {
             </button>
           </h6>
           <Modal
-            title={t("ModalMyPro.Details")}
+            title={t("OrderStatus.Details")}
             open={isModalOpen}
             onOk={() => handleOk("Details")}
             key="Details"
@@ -181,7 +181,7 @@ export default function ModalWait(order) {
               <div className=" w-full flex flex-wrap gap-2 items-center ">
                 {" "}
                 <h1 className="text-2xl font-medium text-[#ad8d36]">
-                  {t("ModalMyPro.Name")} :
+                  {t("OrderStatus.Name")} :
                 </h1>{" "}
                 <h1 className=" text-xl text-gray-200 min-w-[80px]  max-w-[72%]">
                   {order.product.product_name}
@@ -190,7 +190,7 @@ export default function ModalWait(order) {
               <div className=" w-full flex flex-wrap gap-2 items-center ">
                 {" "}
                 <h1 className="text-2xl font-medium text-[#ad8d36]">
-                  OrderId :
+                  {t("OrderStatus.OrderId")}
                 </h1>{" "}
                 <h1 className=" text-xl text-gray-200 min-w-[80px]  max-w-[72%]">
                   {order._id}
@@ -199,7 +199,7 @@ export default function ModalWait(order) {
               <div className=" w-full flex flex-wrap gap-2 items-center">
                 {" "}
                 <h1 className="text-2xl font-medium text-[#ad8d36]">
-                  {t("ModalMyPro.Quantity")} :
+                  {t("OrderStatus.Quantity")} :
                 </h1>{" "}
                 <h1 className=" text-xl text-gray-200">
                   {order.product.quantity}
@@ -209,7 +209,7 @@ export default function ModalWait(order) {
                 <div className=" w-full flex flex-wrap gap-2 items-center">
                   {" "}
                   <h1 className="text-2xl font-medium text-[#ad8d36]">
-                    Notes :
+                    {t("OrderStatus.Notes")}
                   </h1>{" "}
                   <h1 className=" text-xl text-gray-200">
                     {order.product.notes}
@@ -220,7 +220,7 @@ export default function ModalWait(order) {
               <div className=" w-full flex flex-wrap gap-2 items-center ">
                 {" "}
                 <h1 className="text-2xl font-medium text-[#ad8d36]">
-                  {t("ModalMyPro.File_Name")} :
+                  {t("OrderStatus.File_Name")} :
                 </h1>{" "}
                 <h1 className=" text-xl text-gray-200 min-w-[80px]   max-w-[72%]">
                   <Link to={order.product.file}> {order.product.file}</Link>
@@ -252,7 +252,7 @@ export default function ModalWait(order) {
               className="cursor-pointer relative group overflow-hidden border-2 px-8 py-2 border-green-500"
             >
               <span className="font-bold text-[#000915] text-xl relative z-10 group-hover:text-gray-200 duration-500">
-                Accept
+                {t("OrderStatus.Accept")}
               </span>
               <span className="absolute top-0 left-0 w-full bg-green-500 duration-500 group-hover:-translate-x-full h-full"></span>
               <span className="absolute top-0 left-0 w-full bg-green-500 duration-500 group-hover:translate-x-full h-full"></span>
@@ -268,13 +268,13 @@ export default function ModalWait(order) {
                 onClick={() => handleDeny(order._id)}
                 className="px-5 py-2"
               >
-                Reject
+                {t("OrderStatus.Deny")}
               </button>
             </div>
           </h6>
 
           <Modal
-            title="Accept"
+            title={t("OrderStatus.Accept")}
             open={isStatusOpen}
             onOk={() => handleOk("Accept")}
             key="Accept"
@@ -289,7 +289,7 @@ export default function ModalWait(order) {
                     htmlFor="totalCost"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Total Cost
+                    {t("OrderStatus.TotalCost")}
                   </label>
                   <input
                     onChange={handleChangeTot}
@@ -297,7 +297,7 @@ export default function ModalWait(order) {
                     type="text"
                     id="totalCost"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Total Cost"
+                    placeholder={t("OrderStatus.TotalCost")}
                     required
                   />
                 </div>
@@ -306,7 +306,7 @@ export default function ModalWait(order) {
                     htmlFor="paymentCode"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Payment Code
+                    {t("OrderStatus.PaymentCode")}
                   </label>
                   <input
                     value={paymentCode}
@@ -314,7 +314,7 @@ export default function ModalWait(order) {
                     type="text"
                     id="paymentCode"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Payment Code"
+                    placeholder={t("OrderStatus.PaymentCode")}
                     required
                   />
                 </div>
@@ -324,13 +324,13 @@ export default function ModalWait(order) {
                     htmlFor="deliveryTime"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Delivery Time
+                    {t("OrderStatus.DeliveryTime")}
                   </label>
                   <DatePicker
                     required
                     className="border focus-within:!bg-gray-700 hover:bg-gray-700 focus:bg-gray-700  active:bg-gray-700 text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600  !text-gray-200  hover:border-gray-600 focus:border-gray-600 active:border-gray-600 placeholder-shown:text-gray-200 placeholder:text-gray-200"
                     onChange={onChange}
-                    placeholder="Delivery Time"
+                    placeholder={null}
                     format={{
                       format: "YYYY-MM-DD",
                       type: "mask",
@@ -358,7 +358,7 @@ export default function ModalWait(order) {
                         }
                       />
                     ) : (
-                      "Accept"
+                      t("OrderStatus.Accept")
                     )}
                   </button>
 
@@ -366,7 +366,7 @@ export default function ModalWait(order) {
                     onClick={() => handleCancel("Accept")}
                     className="py-2 px-4 shadow-sm text-sm font-medium rounded-md text-gray-200 bg-transparent hover:bg-[#7f6727] border-[#7f6727] duration-300 border-2"
                   >
-                    Cancel
+                    {t("OrderStatus.Cancel")}
                   </button>
                 </div>
               </div>

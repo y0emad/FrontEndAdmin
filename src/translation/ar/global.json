@@ -24,7 +24,16 @@
     "RequiredData": "البيانات المطلوبة",
     "Required": "مطلوب",
     "HasChoices": "لديه خيارات",
-    "Choices": "الخيارات"
+    "Choices": "الخيارات",
+    "Search": "بحث",
+    "Searforprod": "ابحث عن المنتجات...",
+    "TheProdHidd": "المنتج مخفي",
+    "View": "عرض المنتج",
+    "Edit": "تعديل المنتج",
+    "Delete": "حذف المنتج",
+    "Show": "عرض المنتج",
+    "Hide": "إخفاء المنتج",
+    "Nofound": "لم يتم العثور على منتجات"
   },
 
   "Product": {
@@ -36,22 +45,68 @@
     "Sending": "يتم الارسال...",
     "Cancel": "الغاء"
   },
-  "ModalMyPro": {
+  "OrderStatus": {
+    "Order'sStatus": "حالة الطلب",
+    "ProductName": "اسم المنتج",
     "Product": "المنتج",
     "Details": "التفاصيل",
     "Status": "الحالة",
-    "Waiting": "انتظار الرد",
+
     "StatusOfAccept": "حالة الطلب",
-    "Accept": " تم القبول",
-    "Deny": "تم الرفض ",
+    "Accept": "قبول",
+    "Deny": "رفض",
     "Name": "الاسم",
     "File_Name": "اسم الملف",
     "Quantity": "الكمية",
-    "My_Projects": "مشاريعي",
-    "Received": "تم استلامه",
+
     "stat1": "لقد دفعت فاتورة الكتاب الآن سيتم طباعتها.",
     "stat2": "تم الانتهاء من طباعة الكتاب.",
     "stat3": "تم الانتهاء من تغطية الكتاب.",
-    "stat4": "الكتاب جاهز."
+    "stat4": "الكتاب جاهز.",
+    "Order'sDetails": "تفاصيل الطلب",
+    "OrderId": "معرف الطلب :",
+    "Notes": "الملاحظات :",
+    "User'sDetails": "تفاصيل المستخدم",
+    "UserId": "معرف المستخدم :",
+    "UserName": "اسم المستخدم :",
+    "Email": "البريد الإلكتروني :",
+    "PhoneNumber": "رقم الهاتف :",
+    "None": "لا يوجد",
+    "MessageToUser": "رسالة إلى المستخدم",
+    "Message": "الرسالة",
+    "Submit": "إرسال",
+    "Noacceptedfound": "لم يتم العثور على طلبات مقبولة.",
+    "Nofound": "لم يتم العثور على طلبات.",
+    "WaitingList": "قائمة الانتظار",
+    "Response": "الرد",
+    "TotalCost": "التكلفة الإجمالية",
+    "PaymentCode": "كود الدفع",
+    "DeliveryTime": "موعد التسليم",
+    "Cancel": "إلغاء"
+  },
+  "Login": {
+    "Email": "البريد الإلكتروني",
+    "Password": "كلمة المرور",
+    "Login": "تسجيل الدخول"
+  },
+  "EditProduct": {
+    "Update": "تحديث المنتج",
+    "ProductName": "اسم المنتج",
+    "Description": "الوصف",
+    "Ydeschere": "وصفك هنا",
+    "UpdateImage": "تحديث الصورة",
+    "Name": "الاسم",
+    "Required": "مطلوب",
+    "Yes": "نعم",
+    "No": "لا",
+    "HasChoices": "لديه خيارات",
+    "Like": "مثل الأحمر والأسود والأزرق",
+    "Choices": "الخيارات",
+    "format": "يجب أن يكون بهذا التنسيق: أحمر ، أسود ، أزرق",
+    "Cancel": "إلغاء",
+    "AddRequired": "إضافة البيانات المطلوبة",
+    "RemoveRequired": "إزالة البيانات المطلوبة",
+    "AddNewProduct": "إضافة منتج",
+    "Image": "تحميل الصورة"
   }
 }

@@ -193,7 +193,7 @@ function Home() {
         <div className=" flex justify-evenly  flex-wrap mr-5 ml-5 gap-10 ">
           {all_products.message === "No Products found" ||
           all_products.message === "No products found for the given query." ? (
-            <h1 className=" text-2xl font-medium">No products found</h1>
+            <h1 className=" text-2xl font-medium">{t("Home.Nofound")}</h1>
           ) : (
             all_products.data.map((product) => (
               <div key={product._id}>
@@ -213,13 +213,13 @@ function Home() {
                       />
                       {product.deleted && (
                         <div className=" content-center absolute top-[-1px] left-auto text-center text-xl font-medium text-gray-200 !w-[300.2px] h-[60px] rounded-t-lg bg-gradient-to-b from-[#000915] to-[#0009158b]">
-                          The Product Hidden
+                          {t("Home.TheProdHidd")}
                         </div>
                       )}
                     </>
                   }
                   actions={[
-                    <Popover content="View The Product">
+                    <Popover content={t("Home.View")}>
                       <button
                         onClick={() => showModal(product)}
                         className=" hover:!text-[#000915] text-2xl "
@@ -230,7 +230,7 @@ function Home() {
                         />
                       </button>
                     </Popover>,
-                    <Popover content="Edit The Product">
+                    <Popover content={t("Home.Edit")}>
                       <Link
                         to={`/EditProduct/${product._id}`}
                         className=" hover:!text-[#000915] text-2xl mt-1"
@@ -238,7 +238,7 @@ function Home() {
                         <EditOutlined key="edit" />
                       </Link>
                     </Popover>,
-                    <Popover content="Delete The Product">
+                    <Popover content={t("Home.Delete")}>
                       <button
                         onClick={() => handleDelete(product._id)}
                         className=" hover:!text-red-500 text-2xl"
@@ -248,7 +248,7 @@ function Home() {
                       </button>
                     </Popover>,
                     product.deleted ? (
-                      <Popover content="Show The Product">
+                      <Popover content={t("Home.Show")}>
                         <button
                           onClick={() => handleShow(product._id)}
                           className=" hover:!text-[#000915] text-2xl"
@@ -258,7 +258,7 @@ function Home() {
                         </button>
                       </Popover>
                     ) : (
-                      <Popover content="Hide The Product">
+                      <Popover content={t("Home.Hide")}>
                         <button
                           onClick={() => handleHide(product._id)}
                           className=" hover:!text-red-500 text-2xl"

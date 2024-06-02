@@ -8,15 +8,22 @@ import { ThreeCircles } from "react-loader-spinner";
 import { useContext, useEffect, useState } from "react";
 import { authContext } from "../../Context/authentication";
 import { jwtDecode } from "jwt-decode";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import { useTranslation } from "react-i18next";
 export function LogIn() {
   const [errorMeg, setErorrMsg] = useState(null);
   const [successMsg, setSuccessMsg] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [t, i18n] = useTranslation("global");
+  const [lang, setLang] = useLocalStorage("lang", "ar");
   const navigate = useNavigate();
   const { setToken } = useContext(authContext);
   useEffect(() => {
     document.title = "Helwan Printing Press | Log In";
   }, []);
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang]);
   async function sendingData(values) {
     setIsLoading(true);
     try {
@@ -87,7 +94,7 @@ export function LogIn() {
         ) : (
           ""
         )}
-        <h2 className={LOGIN.header}>Login</h2>
+        <h2 className={LOGIN.header}>{t("Login.Login")}</h2>
         <form onSubmit={formikObj.handleSubmit}>
           <input
             type="email"
@@ -99,7 +106,7 @@ export function LogIn() {
               LOGIN.input +
               " mt-5 border w-full text-base ps-8 py-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
             }
-            placeholder="  E-mail"
+            placeholder={t("Login.Email")}
           />
           <i
             className="fa-solid fa-envelope relative "
@@ -128,7 +135,7 @@ export function LogIn() {
               LOGIN.input +
               " mt-5 border w-full text-base ps-8 py-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
             }
-            placeholder="  Password"
+            placeholder={t("Login.Password")}
           />
           <i
             className="fa-solid fa-lock relative "
@@ -166,7 +173,7 @@ export function LogIn() {
                   wrapperClass=""
                 />
               ) : (
-                "Login"
+                t("Login.Login")
               )}
             </button>
           </div>

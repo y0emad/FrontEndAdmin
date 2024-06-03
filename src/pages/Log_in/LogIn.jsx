@@ -104,13 +104,13 @@ export function LogIn() {
             name="email"
             className={
               LOGIN.input +
-              " mt-5 border w-full text-base ps-8 py-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
+              " mt-5 border w-full text-base ps-8 py-2 mx-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
             }
             placeholder={t("Login.Email")}
           />
           <i
-            className="fa-solid fa-envelope relative "
-            style={{ color: "#7f6727", bottom: "33px", left: "10px" }}
+            className="fa-solid fa-envelope relative ltr:left-[10px] px-1 rtl:right-[10px] "
+            style={{ color: "#7f6727", bottom: "33px" }}
           ></i>
           {formikObj.errors.email && formikObj.touched.email ? (
             <div
@@ -133,13 +133,13 @@ export function LogIn() {
             name="password"
             className={
               LOGIN.input +
-              " mt-5 border w-full text-base ps-8 py-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
+              " mt-5 border w-full text-base ps-8 py-2 mx-2 focus:outline-5 focus:ring-3 focus:border-white-600 "
             }
             placeholder={t("Login.Password")}
           />
           <i
-            className="fa-solid fa-lock relative "
-            style={{ color: "#7f6727", bottom: "33px", left: "10px" }}
+            className="fa-solid fa-lock relative ltr:left-[10px] px-1 rtl:right-[10px] "
+            style={{ color: "#7f6727", bottom: "33px" }}
           ></i>
           {formikObj.errors.password && formikObj.touched.password ? (
             <div

@@ -33,7 +33,10 @@
     "Delete": "حذف المنتج",
     "Show": "عرض المنتج",
     "Hide": "إخفاء المنتج",
-    "Nofound": "لم يتم العثور على منتجات"
+    "Nofound": "لم يتم العثور على منتجات",
+    "ProductHide": "تم إخفاء المنتج بنجاح",
+    "Productshow": "تم عرض المنتج بنجاح",
+    "Productdelete": "تم حذف المنتج بنجاح"
   },
 
   "Product": {
@@ -82,12 +85,16 @@
     "TotalCost": "التكلفة الإجمالية",
     "PaymentCode": "كود الدفع",
     "DeliveryTime": "موعد التسليم",
-    "Cancel": "إلغاء"
+    "Cancel": "إلغاء",
+    "OrderDenied": "تم رفض الطلب بنجاح"
   },
   "Login": {
     "Email": "البريد الإلكتروني",
     "Password": "كلمة المرور",
-    "Login": "تسجيل الدخول"
+    "Login": "تسجيل الدخول",
+    "InvalidEmailOrPassword": "بريد إلكتروني أو كلمة مرور غير صالحة.",
+    "Loginsuccessfully": "تسجيل الدخول بنجاح",
+    "YOUNOTAUTH": "ليس مسموح لهذا الحساب"
   },
   "EditProduct": {
     "Update": "تحديث المنتج",

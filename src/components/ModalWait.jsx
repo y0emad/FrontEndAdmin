@@ -132,7 +132,7 @@ export default function ModalWait(order) {
     <>
       {msg ? (
         <Alert
-          message={msg}
+          message={t("OrderStatus.OrderDenied")}
           type="success"
           showIcon
           className=" fixed top-[9%]   translate-x-1/2 right-1/2  "

@@ -41,7 +41,7 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
 
   return (
     <Modal
-      title={t("ModalMyPro.Details")}
+      title={t("OrderStatus.Details")}
       open={open}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -120,6 +120,7 @@ const ProductModal = ({ open, handleOk, handleCancel, product, t }) => {
                     </h1>
                   </div>
                 )}
+                <div className=" text-gray-200 w-auto border border-slate-500 border-collapse"></div>
               </div>
             ))}
           </div>

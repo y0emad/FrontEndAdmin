@@ -33,7 +33,10 @@
     "Delete": "Delete The Product",
     "Show": "Show The Product",
     "Hide": "Hide The Product",
-    "Nofound": "No products found"
+    "Nofound": "No products found",
+    "ProductHide": "Product Hide successfully",
+    "Productshow": "Product show successfully",
+    "Productdelete": "Product delete successfully"
   },
 
   "Product": {
@@ -81,12 +84,16 @@
     "TotalCost": "Total Cost",
     "PaymentCode": "Payment Code",
     "DeliveryTime": "Delivery Time",
-    "Cancel": "Cancel"
+    "Cancel": "Cancel",
+    "OrderDenied": "Order Denied successfully"
   },
   "Login": {
     "Email": "Email",
     "Password": "Password",
-    "Login": "Login"
+    "Login": "Login",
+    "InvalidEmailOrPassword": "Invalid email or password.",
+    "Loginsuccessfully": "Login successfully",
+    "YOUNOTAUTH": "YOU ARE NOT AUTHORIZED"
   },
   "EditProduct": {
     "Update": "Update The Product",

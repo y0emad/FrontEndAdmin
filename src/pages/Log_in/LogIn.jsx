@@ -39,13 +39,13 @@ export function LogIn() {
       if (res.role === "admin") {
         localStorage.setItem("tkn", data.token);
         setToken(data.token);
-        setSuccessMsg("Login successfully.");
+        setSuccessMsg(t("Login.Loginsuccessfully"));
         setTimeout(function () {
           navigate("/");
         }, 3000);
       }
       if (res.role === "user") {
-        setErorrMsg("YOU ARE NOT AUTHORIZED");
+        setErorrMsg(t("Login.YOUNOTAUTH"));
       }
     } catch (error) {
       console.log(error);
@@ -77,7 +77,7 @@ export function LogIn() {
               " text-red-200 shadow-inner rounded p-3 bg-red-300 mt-2 text-center"
             }
           >
-            {errorMeg}
+            {t("Login.InvalidEmailOrPassword")}
           </div>
         ) : (
           ""
@@ -89,7 +89,7 @@ export function LogIn() {
               " text-red-200 shadow-inner rounded p-3 bg-green-300 mt-2 text-center"
             }
           >
-            {successMsg}
+            {t("Login.Loginsuccessfully")}
           </div>
         ) : (
           ""

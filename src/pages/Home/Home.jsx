@@ -59,7 +59,7 @@ function Home() {
         const data = await res.json();
         setAlert(
           <Alert
-            message={data.message}
+            message={t("Home.Productdelete")}
             type="success"
             showIcon
             className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
@@ -101,7 +101,7 @@ function Home() {
         // console.log(data);
         setAlert(
           <Alert
-            message={data.message}
+            message={t("Home.Productshow")}
             type="success"
             showIcon
             className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
@@ -142,7 +142,7 @@ function Home() {
         const data = await res.json();
         setAlert(
           <Alert
-            message={data.message}
+            message={t("Home.ProductHide")}
             type="success"
             showIcon
             className=" fixed top-[9%]   translate-x-1/2 right-1/2  "

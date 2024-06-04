@@ -115,5 +115,11 @@
     "RemoveRequired": "إزالة البيانات المطلوبة",
     "AddNewProduct": "إضافة منتج",
     "Image": "تحميل الصورة"
+  },
+  "Chat": {
+    "Send": "إرسال",
+    "Message": "الرسالة",
+    "QuickChat": "دردشة سريعة",
+    "ActiveConversations": "المحادثات النشطة"
   }
 }

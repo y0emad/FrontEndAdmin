@@ -15,7 +15,7 @@ export function LayoutMain() {
   const { state } = useNavigation();
   const location = useLocation();
   const isHomePage = location.pathname === "/";
-
+  const isChatPage = location.pathname === "/AdminChats";
   return (
     <>
       <NavBarMain />
@@ -30,18 +30,31 @@ export function LayoutMain() {
         <Loading />
       ) : (
         <>
-          <ScrollRestoration />
-          <div
-            style={{
-              // paddingTop: "4rem",
-              minHeight: "calc(100vh - 4rem - 138px)",
-            }}
-          >
-            <Outlet />
-          </div>
-          <div style={{ paddingTop: "4rem" }}>
-            <FooterMain />
-          </div>
+          {isChatPage ? (
+            <div
+              style={{
+                // paddingTop: "4rem",
+                minHeight: "calc(100vh - 4rem  )",
+              }}
+            >
+              <Outlet />
+            </div>
+          ) : (
+            <>
+              <ScrollRestoration />
+              <div
+                style={{
+                  // paddingTop: "4rem",
+                  minHeight: "calc(100vh - 4rem - 138px)",
+                }}
+              >
+                <Outlet />
+              </div>
+              <div style={{ paddingTop: "4rem" }}>
+                <FooterMain />
+              </div>
+            </>
+          )}
         </>
       )}
     </>

@@ -8,6 +8,7 @@ import { OrdersStatusFunc } from "./pages/OrdersStatus/OrdersStatus";
 import { EditExitProduct } from "./pages/EditProduct/EditProduct";
 import { WaitingPageFunc } from "./pages/WaitingList/WaitingPage";
 
+import { AdminChatsFunc } from "./pages/Chats/AdminChats";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -31,6 +32,11 @@ export const router = createBrowserRouter([
       {
         path: "/WaitingPage",
         ...WaitingPageFunc,
+      },
+
+      {
+        path: "/AdminChats",
+        ...AdminChatsFunc,
       },
     ],
   },

@@ -114,5 +114,11 @@
     "RemoveRequired": "Remove Required Data",
     "AddNewProduct": "Add The Product",
     "Image": "Upload Image"
+  },
+  "Chat": {
+    "Send": "Send",
+    "Message": "Message",
+    "QuickChat": "Quick Chat",
+    "ActiveConversations": "Active Conversations"
   }
 }

@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import {
+  CommentOutlined,
   DeleteOutlined,
   EditOutlined,
   EyeInvisibleOutlined,
@@ -171,7 +172,7 @@ function Home() {
   };
 
   return (
-    <div>
+    <div className=" relative ">
       <ScrollToTop
         smooth
         top={400}
@@ -186,7 +187,7 @@ function Home() {
         }
       />
 
-      <div className=" text-gray-200 ">
+      <div className="  text-gray-200 ">
         <h2 className="fontBold text-2xl  m-10 mb-15">
           {t("Home.all_products")}
         </h2>
@@ -290,6 +291,13 @@ function Home() {
               t={t}
             />
           )}
+      <Link
+        to="/AdminChats"
+        className=" fixed bottom-10 w-fit h-fit rounded-full text-gray-200 left-10 bg-[#000915] "
+      >
+        {" "}
+        <CommentOutlined className=" text-4xl hover:text-[#7f6727]" />
+      </Link>
     </div>
   );
 }

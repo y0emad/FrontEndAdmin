@@ -118,6 +118,7 @@
   "Chat": {
     "Send": "Send",
     "Message": "Message",
+    "Msg": "Message...",
     "QuickChat": "Quick Chat",
     "ActiveConversations": "Active Conversations"
   }

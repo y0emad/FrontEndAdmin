@@ -291,13 +291,15 @@ function Home() {
               t={t}
             />
           )}
-      <Link
-        to="/AdminChats"
-        className=" fixed bottom-10 w-fit h-fit rounded-full text-gray-200 left-10 bg-[#000915] "
-      >
-        {" "}
-        <CommentOutlined className=" text-4xl hover:text-[#7f6727]" />
-      </Link>
+      <Popover content="Chats">
+        <Link
+          to="/AdminChats"
+          className=" fixed bottom-10 w-fit h-fit rounded-full text-gray-200 left-10 bg-[#000915] "
+        >
+          {" "}
+          <CommentOutlined className=" text-4xl hover:text-[#7f6727]" />
+        </Link>
+      </Popover>
     </div>
   );
 }

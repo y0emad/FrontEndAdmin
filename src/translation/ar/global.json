@@ -119,6 +119,7 @@
   "Chat": {
     "Send": "إرسال",
     "Message": "الرسالة",
+    "Msg": "الرسالة...",
     "QuickChat": "دردشة سريعة",
     "ActiveConversations": "المحادثات النشطة"
   }

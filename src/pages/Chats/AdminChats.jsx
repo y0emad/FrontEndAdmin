@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import { jwtDecode } from "jwt-decode";
 import { Chats } from "./Chats";
+import { DivChat } from "../../components/DivChat";
 
 // const debounce = (fn, ms = 300) => {
 //   let timeoutId;
@@ -30,9 +31,16 @@ function AdminChats() {
   const all_Chats = useLoaderData();
   const [receiverId, setReceiverId] = useState("");
   const [receiverName, setReceiverName] = useState("");
+  const [receiverEmail, setReceiverEmail] = useState("");
+  const [receiverUserName, setReceiverUserName] = useState("");
+  const [toggle, setToggle] = useState(false);
   //   const query = useRef(null);
   //   const navigate = useNavigate();
-
+  const handleClick = (userName, email) => {
+    setToggle(true);
+    setReceiverEmail(email);
+    setReceiverUserName(userName);
+  };
   useEffect(() => {
     i18n.changeLanguage(lang);
   }, [lang]);
@@ -71,6 +79,13 @@ function AdminChats() {
             </div>
             <div className="ms-2 font-bold text-2xl">{t("Chat.QuickChat")}</div>
           </div>
+          {toggle && (
+            <DivChat
+              receiverUserName={receiverUserName}
+              receiverEmail={receiverEmail}
+              key={receiverId}
+            />
+          )}
           <div className="border-b-2 py-4 px-2">
             {/* <Form>
               <div className="relative  my-2">
@@ -109,20 +124,22 @@ function AdminChats() {
               class="py-2 px-2 border-2 text-[#000915] border-gray-200 rounded-2xl w-full"
             /> */}
           </div>
+
           <div className="flex flex-col mt-8">
             <div className="flex flex-row items-center justify-between text-xs">
               <span className="font-bold">{t("Chat.ActiveConversations")}</span>
             </div>
             {all_Chats.message === "Unique chat users fetched successfully"
-              ? all_Chats.data.map((chat) => (
+              ? all_Chats?.data?.map((chat) => (
                   <div
                     key={chat._id}
-                    className="flex flex-col space-y-1 mt-4 -mx-2 h-48 overflow-y-auto"
+                    className="flex flex-col space-y-1 mt-4 -mx-2 h-fit overflow-y-auto"
                   >
                     <button
                       onClick={() =>
                         setReceiverId(chat._id) &
-                        setReceiverName(Helper.getInitials(chat.username))
+                        setReceiverName(Helper.getInitials(chat.username)) &
+                        handleClick(chat.username, chat.email)
                       }
                       className="flex flex-row items-center hover:bg-[#7f6727] rounded-xl p-2"
                     >
@@ -139,10 +156,14 @@ function AdminChats() {
           </div>
         </div>
         {receiverId ? (
-          <Chats receiverId={receiverId} receiverName={receiverName} />
+          <Chats
+            receiverId={receiverId}
+            key={receiverId}
+            receiverName={receiverName}
+          />
         ) : (
-          <div class="area">
-            <ul class="circles">
+          <div className="area">
+            <ul className="circles">
               <li></li>
               <li></li>
               <li></li>
@@ -184,7 +205,7 @@ const loader = async ({ request: { signal, url } }) => {
       signal: signal,
     }
   ).then((res) => res.json());
-  console.log(all_Chats);
+  // console.log(all_Chats);
   return all_Chats;
 };
 

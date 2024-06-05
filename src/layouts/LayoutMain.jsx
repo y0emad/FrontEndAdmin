@@ -8,8 +8,9 @@ import {
 
 import { Loading } from "../pages/Loading/Loading";
 import { FooterMain } from "../components/FooterMain";
-import { calc } from "antd/es/theme/internal";
+
 import { Search } from "../components/Search";
+import { SearchChat } from "../components/SearchChat";
 
 export function LayoutMain() {
   const { state } = useNavigation();
@@ -25,6 +26,12 @@ export function LayoutMain() {
         }}
       >
         {isHomePage && <Search />}
+        {isChatPage && (
+          <div className=" bg-[#000915]">
+            {" "}
+            <SearchChat />
+          </div>
+        )}
       </div>
       {state === "loading" ? (
         <Loading />

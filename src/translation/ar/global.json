@@ -121,6 +121,8 @@
     "Message": "الرسالة",
     "Msg": "الرسالة...",
     "QuickChat": "دردشة سريعة",
-    "ActiveConversations": "المحادثات النشطة"
+    "ActiveConversations": "المحادثات النشطة",
+    "SearforChats": "البحث عن المستخدمين ...",
+    "Nochats": "لم يتم العثور على دردشات"
   }
 }

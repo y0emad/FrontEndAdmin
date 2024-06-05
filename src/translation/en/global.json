@@ -120,6 +120,8 @@
     "Message": "Message",
     "Msg": "Message...",
     "QuickChat": "Quick Chat",
-    "ActiveConversations": "Active Conversations"
+    "ActiveConversations": "Active Conversations",
+    "SearforChats": "Search for users ...",
+    "Nochats": "No chats found"
   }
 }

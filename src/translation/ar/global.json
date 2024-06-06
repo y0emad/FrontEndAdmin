@@ -86,7 +86,8 @@
     "PaymentCode": "كود الدفع",
     "DeliveryTime": "موعد التسليم",
     "Cancel": "إلغاء",
-    "OrderDenied": "تم رفض الطلب بنجاح"
+    "OrderDenied": "تم رفض الطلب بنجاح",
+    "Received": "استلمت"
   },
   "Login": {
     "Email": "البريد الإلكتروني",

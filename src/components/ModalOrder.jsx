@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import { LoadingOutlined } from "@ant-design/icons";
 
 export default function ModalOrder(order) {
@@ -14,6 +14,7 @@ export default function ModalOrder(order) {
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({});
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   // console.log(order);
   useEffect(() => {
     setStatus(order.status);
@@ -47,6 +48,9 @@ export default function ModalOrder(order) {
       : key === "Status"
       ? setIsStatusOpen(false)
       : setIsDetailsUser(false);
+  };
+  const handle = (e) => {
+    return navigate("/");
   };
   // console.log(message);
   const handleSub = (prodId) => {
@@ -351,88 +355,99 @@ export default function ModalOrder(order) {
               </div>
             )}
           </Modal>
-
-          <h6 className="text-gray-200 font-manrope  font-bold text-2xl leading-9 w-full max-w-[176px] text-center">
-            <button
-              onClick={() => showModal("Status")}
-              className="cursor-pointer relative group overflow-hidden border-2 px-8 py-2 border-[#ad8d36]"
-            >
-              <span className="font-bold text-[#000915] text-xl relative z-10 group-hover:text-gray-200 duration-500">
-                {t("OrderStatus.Status")}
-              </span>
-              <span className="absolute top-0 left-0 w-full bg-[#ad8d36] duration-500 group-hover:-translate-x-full h-full"></span>
-              <span className="absolute top-0 left-0 w-full bg-[#ad8d36] duration-500 group-hover:translate-x-full h-full"></span>
-
-              <span className="absolute top-0 left-0 w-full  bg-[#ad8d36] duration-500 delay-300 group-hover:-translate-y-full h-full"></span>
-              <span className="absolute delay-300 top-0 left-0 w-full bg-[#ad8d36] duration-500 group-hover:translate-y-full h-full"></span>
-            </button>
-          </h6>
-
-          <Modal
-            title={t("OrderStatus.StatusOfAccept")}
-            open={isStatusOpen}
-            onOk={() => handleOk("Status")}
-            key="Status"
-            footer={null}
-            onCancel={() => handleCancel("Status")}
-          >
-            {" "}
-            <Form onSubmit={(e) => window.location.reload(e)}>
-              <div className="grid gap-6  mb-6 mt-10 grid-cols-1">
-                <div>
-                  {" "}
-                  <label
-                    htmlFor="status"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200"
-                  >
+          {status === 3 ? (
+            <h6 className="text-gray-200 font-manrope  font-bold text-2xl leading-9 w-full max-w-[176px] text-center">
+              <div className="   text-[#000915] bg-green-500 border-2 px-8 py-2 border-green-500">
+                <span className="font-bold text-[#000915] text-xl  ">
+                  {t("OrderStatus.Received")}
+                </span>
+              </div>
+            </h6>
+          ) : (
+            <>
+              <h6 className="text-gray-200 font-manrope  font-bold text-2xl leading-9 w-full max-w-[176px] text-center">
+                <button
+                  onClick={() => showModal("Status")}
+                  className="cursor-pointer relative group overflow-hidden border-2 px-14 py-2 border-[#ad8d36]"
+                >
+                  <span className="font-bold text-[#000915] text-xl relative z-10 group-hover:text-gray-200 duration-500">
                     {t("OrderStatus.Status")}
-                  </label>
-                  <select
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                    id="status"
-                    className=" border   text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-[#ad8d36] focus:border-[#ad8d36]"
-                  >
-                    <option value={-1}>1) {t("OrderStatus.None")}</option>
-                    <option value={0}>2) {t("OrderStatus.stat1")}</option>
-                    <option value={1}>3) {t("OrderStatus.stat2")}</option>
-                    <option value={2}>4) {t("OrderStatus.stat3")}</option>
-                    <option value={3}>5) {t("OrderStatus.stat4")}</option>
-                  </select>
-                </div>
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >
-                    {t("OrderStatus.MessageToUser")}
-                  </label>
-                  <input
-                    type="text"
-                    id="message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder={t("OrderStatus.Message")}
-                  />
-                </div>
-                <div className=" gap-5 flex ">
-                  <button
-                    onClick={() => handleSub(order._id)}
-                    className="  py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-200 bg-[#7f6727] hover:bg-gray-200 duration-300 hover:text-[#000915] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7f6727]"
-                  >
-                    {t("OrderStatus.Submit")}
-                  </button>
-                  {/* <button
+                  </span>
+                  <span className="absolute top-0 left-0 w-full bg-[#ad8d36] duration-500 group-hover:-translate-x-full h-full"></span>
+                  <span className="absolute top-0 left-0 w-full bg-[#ad8d36] duration-500 group-hover:translate-x-full h-full"></span>
+
+                  <span className="absolute top-0 left-0 w-full  bg-[#ad8d36] duration-500 delay-300 group-hover:-translate-y-full h-full"></span>
+                  <span className="absolute delay-300 top-0 left-0 w-full bg-[#ad8d36] duration-500 group-hover:translate-y-full h-full"></span>
+                </button>
+              </h6>
+              {}
+              <Modal
+                title={t("OrderStatus.StatusOfAccept")}
+                open={isStatusOpen}
+                onOk={() => handleOk("Status")}
+                key="Status"
+                footer={null}
+                onCancel={() => handleCancel("Status")}
+              >
+                {" "}
+                <Form onSubmit={(e) => window.location.reload(e)}>
+                  <div className="grid gap-6  mb-6 mt-10 grid-cols-1">
+                    <div>
+                      {" "}
+                      <label
+                        htmlFor="status"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200"
+                      >
+                        {t("OrderStatus.Status")}
+                      </label>
+                      <select
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                        id="status"
+                        className=" border   text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-[#ad8d36] focus:border-[#ad8d36]"
+                      >
+                        <option value={-1}>1) {t("OrderStatus.None")}</option>
+                        <option value={0}>2) {t("OrderStatus.stat1")}</option>
+                        <option value={1}>3) {t("OrderStatus.stat2")}</option>
+                        <option value={2}>4) {t("OrderStatus.stat3")}</option>
+                        <option value={3}>5) {t("OrderStatus.stat4")}</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="message"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        {t("OrderStatus.MessageToUser")}
+                      </label>
+                      <input
+                        type="text"
+                        id="message"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder={t("OrderStatus.Message")}
+                      />
+                    </div>
+                    <div className=" gap-5 flex ">
+                      <button
+                        onClick={() => handleSub(order._id)}
+                        className="  py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-200 bg-[#7f6727] hover:bg-gray-200 duration-300 hover:text-[#000915] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7f6727]"
+                      >
+                        {t("OrderStatus.Submit")}
+                      </button>
+                      {/* <button
                     onClick={() => handleCancel("Status")}
                     className=" py-2 px-4 shadow-sm text-sm font-medium rounded-md text-gray-200 bg-transparent hover:bg-[#7f6727] border-[#7f6727] duration-300 border-2"
                   >
                     Cancel
                   </button> */}
-                </div>
-              </div>
-            </Form>
-          </Modal>
+                    </div>
+                  </div>
+                </Form>
+              </Modal>
+            </>
+          )}
         </div>
       </div>
     </>

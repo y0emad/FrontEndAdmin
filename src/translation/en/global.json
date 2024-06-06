@@ -85,7 +85,8 @@
     "PaymentCode": "Payment Code",
     "DeliveryTime": "Delivery Time",
     "Cancel": "Cancel",
-    "OrderDenied": "Order Denied successfully"
+    "OrderDenied": "Order Denied successfully",
+    "Received": "Received"
   },
   "Login": {
     "Email": "Email",

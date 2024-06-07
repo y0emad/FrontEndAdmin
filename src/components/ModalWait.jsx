@@ -31,7 +31,7 @@ export default function ModalWait(order) {
   };
   const onChange = (date, dateString) => {
     setDateString(dateString);
-    console.log(dateString);
+    // console.log(dateString);
   };
   const handleChangePay = (e) => {
     setPaymentCode(e.target.value);
@@ -41,56 +41,59 @@ export default function ModalWait(order) {
   };
 
   const handleAccept = (product_id) => {
+    if (totalCost === "" || paymentCode === "" || dateString === "") {
+      return;
+    }
     const abortController = new AbortController();
     const signal = abortController.signal;
+    setLoading(true);
 
-    fetch(`http://localhost:4000/orders/${product_id}/accept`, {
-      signal,
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${localStorage.getItem("tkn")}`,
-      },
-      body: JSON.stringify({
-        totalCost: totalCost,
-        paymentCode: paymentCode,
-        deliveryTime: dateString,
-      }),
-      method: "put",
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
+    if (totalCost !== "") {
+      fetch(`http://localhost:4000/orders/${product_id}/accept`, {
+        signal,
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("tkn")}`,
+        },
+        body: JSON.stringify({
+          totalCost: totalCost,
+          paymentCode: paymentCode,
+          deliveryTime: dateString,
+        }),
+        method: "put",
       })
-      .then((data) => {
-        // console.log(data);
-        setMsg(data.message);
-        setError(null);
-      })
-      .catch((error) => {
-        if (error.name === "AbortError") {
-        } else {
-          setError(error.message);
-        }
-      })
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res.json();
+        })
+        .then((data) => {
+          setMsg(data.message);
+          setError(null);
+        })
+        .catch((error) => {
+          if (error.name === "AbortError") {
+          } else {
+            setError(error.message);
+          }
+        })
+        .finally(() => {
+          setLoading(false);
 
-      .finally(() => {
-        setLoading(false);
-
-        setTimeout(() => {
           window.location.reload();
-        }, 2000);
-      });
+        });
+    }
 
     return () => {
       abortController.abort();
     };
   };
+
   const handleDeny = (product_id) => {
     const abortController = new AbortController();
     const signal = abortController.signal;
-
+    setLoading(true);
     fetch(`http://localhost:4000/orders/${product_id}/deny`, {
       signal,
       headers: {
@@ -107,6 +110,7 @@ export default function ModalWait(order) {
       .then((data) => {
         // console.log(data);
         setMsg(data.message);
+
         setError(null);
       })
       .catch((error) => {
@@ -118,9 +122,7 @@ export default function ModalWait(order) {
       .finally(() => {
         setLoading(false);
 
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
+        window.location.reload();
       });
 
     return () => {
@@ -132,17 +134,17 @@ export default function ModalWait(order) {
     <>
       {msg ? (
         <Alert
-          message={t("OrderStatus.OrderDenied")}
+          message={msg}
           type="success"
           showIcon
-          className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+          className=" fixed top-[9%]  z-50  translate-x-1/2 right-1/2  "
         />
       ) : error ? (
         <Alert
           message={error.message}
           type="error"
           showIcon
-          className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+          className=" fixed top-[9%]  z-50  translate-x-1/2 right-1/2  "
         />
       ) : null}
       <div className="grid grid-cols-1 lg:grid-cols-2 min-[550px]:gap-7 border-t border-[#7f6727] py-6">
@@ -261,6 +263,7 @@ export default function ModalWait(order) {
               <span className="absolute delay-300 top-0 left-0 w-full bg-green-500 duration-500 group-hover:translate-y-full h-full"></span>
             </button>
           </h6>
+
           <h6 className="text-gray-200 font-manrope  font-bold text-lg leading-9 w-full max-w-[176px] text-center">
             <div className="max-w-32 bg-transparent items-center justify-center flex border-2 border-red-500 shadow-lg hover:bg-red-500 text-red-500 hover:text-white duration-300 cursor-pointer active:scale-[0.98]">
               <button
@@ -268,7 +271,22 @@ export default function ModalWait(order) {
                 onClick={() => handleDeny(order._id)}
                 className="px-5 py-2"
               >
-                {t("OrderStatus.Deny")}
+                {loading ? (
+                  <Spin
+                    size="large"
+                    indicator={
+                      <LoadingOutlined
+                        style={{
+                          fontSize: 24,
+                          color: "#e5e7eb",
+                        }}
+                        spin
+                      />
+                    }
+                  />
+                ) : (
+                  t("OrderStatus.Deny")
+                )}
               </button>
             </div>
           </h6>
@@ -292,13 +310,13 @@ export default function ModalWait(order) {
                     {t("OrderStatus.TotalCost")}
                   </label>
                   <input
+                    required
                     onChange={handleChangeTot}
                     value={totalCost}
                     type="text"
                     id="totalCost"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={t("OrderStatus.TotalCost")}
-                    required
                   />
                 </div>
                 <div>
@@ -309,13 +327,13 @@ export default function ModalWait(order) {
                     {t("OrderStatus.PaymentCode")}
                   </label>
                   <input
+                    required
                     value={paymentCode}
                     onChange={handleChangePay}
                     type="text"
                     id="paymentCode"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder={t("OrderStatus.PaymentCode")}
-                    required
                   />
                 </div>
                 <div>

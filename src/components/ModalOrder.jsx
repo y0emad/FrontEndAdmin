@@ -49,14 +49,14 @@ export default function ModalOrder(order) {
       ? setIsStatusOpen(false)
       : setIsDetailsUser(false);
   };
-  const handle = (e) => {
-    return navigate("/");
-  };
+  // const handle = (e) => {
+  //   return navigate("/");
+  // };
   // console.log(message);
   const handleSub = (prodId) => {
     const abortController = new AbortController();
     const signal = abortController.signal;
-
+    setLoading(true);
     if (message && message.length > 0) {
       fetch(`http://localhost:4000/orders/${prodId}/sendMessage`, {
         signal,
@@ -103,6 +103,7 @@ export default function ModalOrder(order) {
       .then((data) => {
         setMsg(data.message);
         setError(null);
+        window.location.reload();
       })
       .catch((error) => {
         if (error.name !== "AbortError") {
@@ -117,9 +118,10 @@ export default function ModalOrder(order) {
   };
 
   useEffect(() => {
+    if (!isDetailsUser || !isDetailsUser) return;
     const abortController = new AbortController();
     const signal = abortController.signal;
-
+    setLoading(true);
     fetch(`http://localhost:4000/orders/${order._id}`, {
       signal,
       headers: {
@@ -147,7 +149,7 @@ export default function ModalOrder(order) {
         }
       })
       .finally(() => setLoading(false));
-  }, [order.id]);
+  }, [order.id, isDetailsUser, isStatusOpen]);
   return (
     <>
       {msg ? (
@@ -155,14 +157,14 @@ export default function ModalOrder(order) {
           message={msg}
           type="success"
           showIcon
-          className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+          className=" fixed top-[9%]  z-50  translate-x-1/2 right-1/2  "
         />
       ) : error ? (
         <Alert
           message={error.message}
           type="error"
           showIcon
-          className=" fixed top-[9%]   translate-x-1/2 right-1/2  "
+          className=" fixed top-[9%] z-50   translate-x-1/2 right-1/2  "
         />
       ) : null}
       <div className="grid grid-cols-1 lg:grid-cols-2 min-[550px]:gap-7 border-t border-[#7f6727] py-6">
@@ -174,7 +176,7 @@ export default function ModalOrder(order) {
           </div>
         </div>
         <div className="flex items-center justify-evenly flex-col min-[550px]:flex-row w-full max-xl:max-w-xl max-xl:mx-auto gap-2">
-          <h6 className="font-manrope font-bold text-2xl  leading-9 text-gray-200 w-full max-w-[176px] text-center">
+          <h6 className="font-manrope font-bold text-2xl  text-nowrap leading-9 text-gray-200 w-full max-w-[176px] text-center">
             <button
               onClick={() => showModal("Details")}
               className="cursor-pointer relative group overflow-hidden border-2 px-4 py-2 border-gray-200"
@@ -390,61 +392,76 @@ export default function ModalOrder(order) {
                 onCancel={() => handleCancel("Status")}
               >
                 {" "}
-                <Form onSubmit={(e) => window.location.reload(e)}>
-                  <div className="grid gap-6  mb-6 mt-10 grid-cols-1">
-                    <div>
-                      {" "}
-                      <label
-                        htmlFor="status"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200"
-                      >
-                        {t("OrderStatus.Status")}
-                      </label>
-                      <select
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
-                        id="status"
-                        className=" border   text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-[#ad8d36] focus:border-[#ad8d36]"
-                      >
-                        <option value={-1}>1) {t("OrderStatus.None")}</option>
-                        <option value={0}>2) {t("OrderStatus.stat1")}</option>
-                        <option value={1}>3) {t("OrderStatus.stat2")}</option>
-                        <option value={2}>4) {t("OrderStatus.stat3")}</option>
-                        <option value={3}>5) {t("OrderStatus.stat4")}</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="message"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        {t("OrderStatus.MessageToUser")}
-                      </label>
-                      <input
-                        type="text"
-                        id="message"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder={t("OrderStatus.Message")}
+                {loading ? (
+                  <Spin
+                    size="large"
+                    indicator={
+                      <LoadingOutlined
+                        style={{
+                          fontSize: 24,
+                          color: "#e5e7eb",
+                        }}
+                        spin
                       />
-                    </div>
-                    <div className=" gap-5 flex ">
-                      <button
-                        onClick={() => handleSub(order._id)}
-                        className="  py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-200 bg-[#7f6727] hover:bg-gray-200 duration-300 hover:text-[#000915] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7f6727]"
-                      >
-                        {t("OrderStatus.Submit")}
-                      </button>
-                      {/* <button
+                    }
+                  />
+                ) : (
+                  <Form>
+                    <div className="grid gap-6  mb-6 mt-10 grid-cols-1">
+                      <div>
+                        {" "}
+                        <label
+                          htmlFor="status"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-200"
+                        >
+                          {t("OrderStatus.Status")}
+                        </label>
+                        <select
+                          value={status}
+                          onChange={(e) => setStatus(e.target.value)}
+                          id="status"
+                          className=" border   text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-gray-200 focus:ring-[#ad8d36] focus:border-[#ad8d36]"
+                        >
+                          <option value={-1}>1) {t("OrderStatus.None")}</option>
+                          <option value={0}>2) {t("OrderStatus.stat1")}</option>
+                          <option value={1}>3) {t("OrderStatus.stat2")}</option>
+                          <option value={2}>4) {t("OrderStatus.stat3")}</option>
+                          <option value={3}>5) {t("OrderStatus.stat4")}</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label
+                          htmlFor="message"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          {t("OrderStatus.MessageToUser")}
+                        </label>
+                        <input
+                          type="text"
+                          id="message"
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder={t("OrderStatus.Message")}
+                        />
+                      </div>
+                      <div className=" gap-5 flex ">
+                        <button
+                          onClick={() => handleSub(order._id)}
+                          className="  py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-200 bg-[#7f6727] hover:bg-gray-200 duration-300 hover:text-[#000915] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7f6727]"
+                        >
+                          {t("OrderStatus.Submit")}
+                        </button>
+                        {/* <button
                     onClick={() => handleCancel("Status")}
                     className=" py-2 px-4 shadow-sm text-sm font-medium rounded-md text-gray-200 bg-transparent hover:bg-[#7f6727] border-[#7f6727] duration-300 border-2"
                   >
                     Cancel
                   </button> */}
+                      </div>
                     </div>
-                  </div>
-                </Form>
+                  </Form>
+                )}
               </Modal>
             </>
           )}

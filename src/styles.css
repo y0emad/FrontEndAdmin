@@ -147,6 +147,32 @@
   color: #e5e7eb !important;
 }
 
+.custom-pagination .ant-pagination-item a {
+  color: #e5e7eb;
+}
+
+.custom-pagination .ant-pagination-item-active a {
+  color: #e5e7eb;
+}
+
+.custom-pagination .ant-pagination-item {
+  background-color: #000915;
+  border: none;
+  border-radius: 4px;
+  margin: 0 4px;
+}
+
+.custom-pagination .ant-pagination-item-active {
+  background-color: #7f6727;
+}
+.ant-pagination-next .ant-pagination-item-link {
+  color: #e5e7eb !important;
+}
+
+.ant-pagination .ant-pagination-item-link {
+  color: #e5e7eb !important;
+}
+
 body {
   padding: 0;
   margin: 0;

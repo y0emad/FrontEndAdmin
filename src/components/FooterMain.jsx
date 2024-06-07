@@ -52,7 +52,7 @@ export function FooterMain() {
           />
         </div>
       </div>
-      <div className="text-gray-200 text-center fontTwoLight h-fit">
+      <div className="text-gray-200 text-center  h-fit">
         {t("footer.copyright")}
       </div>
       <div className="text-gray-200   w-fit h-fit  text-lg flex sm:top-auto gap-3 items-center    sm:absolute sm:right-7 justify-self-center">

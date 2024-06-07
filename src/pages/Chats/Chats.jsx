@@ -104,7 +104,15 @@ export function Chats({ receiverId, receiverName }) {
       abortController.abort();
     };
   }, [receiverId, adminId, token]);
+  useEffect(() => {
+    const scrollToBottom = () => {
+      if (chatEndRef.current) {
+        chatEndRef.current.scrollTop = chatEndRef.current.scrollHeight;
+      }
+    };
 
+    scrollToBottom();
+  }, [messages]);
   useEffect(() => {
     connect(tokenDecode.userId);
     subscribeToMessages((message) => {
@@ -134,7 +142,7 @@ export function Chats({ receiverId, receiverName }) {
 
   const handleSendMessage = async () => {
     const trimmedMessage = newMessage.trim();
-
+    setShowEmojiPicker(false);
     if (!trimmedMessage) {
       return;
     }
@@ -144,7 +152,7 @@ export function Chats({ receiverId, receiverName }) {
       senderId: adminId,
       receiverId: receiverId,
       content: trimmedMessage,
-      timestamp: currentTime,
+      createdAt: currentTime,
       _id: uuidv4(),
     };
 
@@ -159,7 +167,7 @@ export function Chats({ receiverId, receiverName }) {
 
   const groupMessagesByDate = (messages) => {
     return messages.reduce((groups, message) => {
-      const date = getDateOnly(message.timestamp);
+      const date = getDateOnly(message.createdAt);
       if (!groups[date]) {
         groups[date] = [];
       }
@@ -197,7 +205,10 @@ export function Chats({ receiverId, receiverName }) {
   ) : (
     <div className="flex flex-col flex-auto h-full p-6 pb-0">
       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-[#000915] h-full p-4">
-        <div className="flex flex-col h-full overflow-x-auto mb-4">
+        <div
+          className="flex flex-col h-full overflow-x-auto scrollbar-hide mb-4"
+          ref={chatEndRef}
+        >
           <div className="flex flex-col h-full">
             {Object.entries(groupedMessages).map(([date, messages]) => (
               <div key={date}>
@@ -219,7 +230,7 @@ export function Chats({ receiverId, receiverName }) {
                             <div>{message.content}</div>
                             <div className="absolute text-nowrap text-xs bottom-0 ltr:right-0 rtl:left-0 -mb-5 mr-2 text-gray-500">
                               <span className="text-nowrap">
-                                {extractTimeFromISOString(message.timestamp)}
+                                {extractTimeFromISOString(message.createdAt)}
                               </span>
                             </div>
                           </div>
@@ -235,7 +246,7 @@ export function Chats({ receiverId, receiverName }) {
                             <div>{message.content}</div>
                             <div className="absolute text-nowrap text-xs bottom-0 ltr:right-0 rtl:left-0 -mb-5 mr-2 text-gray-500">
                               <span className="text-nowrap">
-                                {extractTimeFromISOString(message.timestamp)}
+                                {extractTimeFromISOString(message.createdAt)}
                               </span>
                             </div>
                           </div>
@@ -246,7 +257,6 @@ export function Chats({ receiverId, receiverName }) {
                 ))}
               </div>
             ))}
-            <div ref={chatEndRef} />
           </div>
         </div>
 
@@ -258,6 +268,7 @@ export function Chats({ receiverId, receiverName }) {
             <div className="relative w-full">
               <input
                 placeholder={t("Chat.Msg")}
+                onFocus={() => setShowEmojiPicker(false)}
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}

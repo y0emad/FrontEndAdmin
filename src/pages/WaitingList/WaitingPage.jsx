@@ -55,9 +55,10 @@ function WaitingPage() {
               {t("OrderStatus.Nofound")}
             </h1>
           ) : (
-            ordersWait.data.map((order) => (
-              <ModalWait {...order} key={order._id} />
-            ))
+            ordersWait.data
+              .slice()
+              .reverse()
+              .map((order) => <ModalWait {...order} key={order._id} />)
           )}
         </div>
       </section>

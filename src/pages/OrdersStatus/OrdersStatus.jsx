@@ -56,9 +56,12 @@ function OrdersStatus() {
                 </div>
               </div>
 
-              {allOrderAccept.data.map((order) => (
-                <ModalOrder {...order} key={order._id} />
-              ))}
+              {allOrderAccept.data
+                .slice()
+                .reverse()
+                .map((order) => (
+                  <ModalOrder {...order} key={order._id} />
+                ))}
             </div>
             <Pagination
               className="custom-pagination mt-8 text-gray-200 text-center"
